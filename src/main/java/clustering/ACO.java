@@ -25,13 +25,13 @@ public class ACO {
         for (int i = 0; i < k; i++) {//Create k clusters
         	int randCentroid = rand.nextInt(data.size());
         	
-        	Cluster cluster = new Cluster(data.get(randCentroid), i);
+        	Cluster cluster = new Cluster(data.get(randCentroid).getData(), i);
             clusters.add(cluster);
         }
             for (int j = 0; j < data.size(); j++) {
             	int cf = rand.nextInt(k);
             	//data.get(j).assignToCluster(clusters.get(cf));
-                clusters.get(cf).addPoint(j);
+                clusters.get(cf).addPoint(data.get(j));
             }
         //System.out.println("begin clusters: " + clusters);
         //System.out.println("Clusters created: " + clusters);

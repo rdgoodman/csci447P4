@@ -18,7 +18,7 @@ public class KMeans {
 	
 	public ArrayList<Cluster> run(ArrayList<Datum> data){
 		ArrayList<Cluster> clusters = initializeClusters(data);
-		int dim = data.get(0).inputs.size();
+		int dim = data.get(0).getData().size();
 		for (int i = 0; i < gens; i++) {//number of iterations
 			//need to assign each datapoint to the nearest cluster
             for (int j = 0; j < data.size(); j++) {//each datapoint
@@ -40,7 +40,7 @@ public class KMeans {
                 int oldCluster = data.get(j).getClusterIndex();
                 //data.get(j).assignToCluster(clusters.get(smallestCluster));
                 if(oldCluster != smallestCluster){
-                	clusters.get(smallestCluster).addPoint(j);
+                	clusters.get(smallestCluster).addPoint(data.get(j));
                 	ArrayList<Datum> tempPts = clusters.get(oldCluster).getPts();
                 	for(int l = 0; l < tempPts.size(); l++){
                 		if(d.calculateDistance(data.get(j).getData(), tempPts.get(l).getData(), dim) == 0){//TODO find a better way to check equality
@@ -114,13 +114,13 @@ public class KMeans {
         for (int i = 0; i < k; i++) {//Create k clusters
         	int randCentroid = rand.nextInt(data.size());
         	
-        	Cluster cluster = new Cluster(data.get(randCentroid), i);
+        	Cluster cluster = new Cluster(data.get(randCentroid).getData(), i);
             clusters.add(cluster);
         }
             for (int j = 0; j < data.size(); j++) {
             	int cf = rand.nextInt(k);
             	//data.get(j).assignToCluster(clusters.get(cf));
-                clusters.get(cf).addPoint(j);
+                clusters.get(cf).addPoint(data.get(j));
             }
         //System.out.println("begin clusters: " + clusters);
         //System.out.println("Clusters created: " + clusters);
