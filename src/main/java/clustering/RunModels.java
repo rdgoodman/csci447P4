@@ -37,22 +37,22 @@ public class RunModels {
 			}
 			
 			// try pso 			
-			//PSO pso = new PSO(0.5, 0.5, 0.5, 15, 5, dataSize, 0.5);
-			//ClusterSet soln = new ClusterSet(pso.run(data));
+			PSO pso = new PSO(0.5, 0.5, 0.5, 15, 5, dataSize, 0.5);
+			ClusterSet soln = new ClusterSet(pso.run(data));
 			
-			// try competitiveANN
-			ArrayList<Datum> train = new ArrayList<Datum>();
-			ArrayList<Datum> test = new ArrayList<Datum>();
-			for (Datum d : data){
-				double p = Math.random();
-				if (p < .33){
-					test.add(d);
-				} else {
-					train.add(d);
-				}
-			}
-			CompetitiveANN net = new CompetitiveANN(0.5, 11, 5);
-			ClusterSet soln = new ClusterSet(net.run(train, test));
+//			// try competitiveANN
+//			ArrayList<Datum> train = new ArrayList<Datum>();
+//			ArrayList<Datum> test = new ArrayList<Datum>();
+//			for (Datum d : data){
+//				double p = Math.random();
+//				if (p < .33){
+//					test.add(d);
+//				} else {
+//					train.add(d);
+//				}
+//			}
+//			CompetitiveANN net = new CompetitiveANN(0.5, 11, 5);
+//			ClusterSet soln = new ClusterSet(net.run(train, test));
 			
 			
 			

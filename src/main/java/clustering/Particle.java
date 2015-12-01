@@ -57,18 +57,18 @@ public class Particle {
 	 */
 	private void initialize() {
 		// TODO: what are the potential ranges for the centroids?
-		// going to assume [-1, 1] for now
+		// going to assume [0, 1] for now for normalized data
 		for (int c = 0; c < numClusters; c++) {
 			ArrayList<Double> vector = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
 				double random = Math.random();
 				double prob = Math.random();
-				if (prob > 0.5) {
+//				if (prob > 0.5) {
 					vector.add(random);
-				} else {
-					vector.add(-1 * random);
-				}
+//				} else {
+//					vector.add(-1 * random);
+//				}
 			}
 			centroids.add(new Cluster(vector, c));
 		}
@@ -105,7 +105,7 @@ public class Particle {
 		for (int c = 0; c < numClusters; c++) {
 			double dist = calcDistToCentroid(c, z.getData());
 			// TODO: testing, remove
-			//System.out.println("Dist to " + c + " = " + calcDistToCentroid(c, z.getData()));
+			System.out.println("Dist to " + c + " = " + calcDistToCentroid(c, z.getData()));
 			// System.out.println(c + " dist: " + dist);
 			// finds minimum distance
 			if (dist < min) {

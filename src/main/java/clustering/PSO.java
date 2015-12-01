@@ -68,8 +68,8 @@ public class PSO {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 1000) {	
-			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
+		while (count < 3) {	
+			System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
