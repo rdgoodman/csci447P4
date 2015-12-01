@@ -22,6 +22,7 @@ public class Datum {
 	public double calcDist(Datum o){
 		double dist = 0;
 		for (int i = 0; i < inputs.size(); i++){
+			//System.out.println("Added (" + this.inputs.get(i) + " - " + o.getData().get(i) + ")^2");
 			dist += Math.pow(this.inputs.get(i) - o.getData().get(i), 2);
 		}
 		return dist;

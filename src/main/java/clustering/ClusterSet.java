@@ -68,12 +68,14 @@ public class ClusterSet {
 	 */
 	private double calcSep(Cluster c1, Cluster c2) {
 		double sep = 0;
+		
 		for (int i = 0; i < c1.getPts().size(); i++) {
-			for (int j = i + 1; j < c2.getPts().size(); j++) {
+			for (int j = 0; j < c2.getPts().size(); j++) {
 				// calculates distance from point i in c1 to point j in c2
 				sep += c1.getPts().get(i).calcDist(c2.getPts().get(j));
 			}
 		}
+		
 		return sep;
 	}
 
