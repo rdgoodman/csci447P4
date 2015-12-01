@@ -73,6 +73,8 @@ public class PSO {
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
+				System.out.println();
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARTICLE:" + pcount);
 				for (Datum z : data) {
 					int cluster = p.findBestCluster(z);
 					// TODO: testing, remove
@@ -88,7 +90,7 @@ public class PSO {
 					gbest_store = p.copyBest();
 					minGlobalFitness = fit;
 					
-					//System.out.println("%%%%%%% NEW G BEST %%%%%%%");
+					System.out.println("%%%%%%% NEW G BEST %%%%%%%");
 					evaluateGBest();
 				}
 
@@ -106,7 +108,8 @@ public class PSO {
 		}
 
 		// reassign/reevaluate g_best & return
-		System.out.println("RETURN: ");
+		System.out.println();
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& RETURN: ");
 		Particle solution = evaluateGBest();
 		solution.print();
 		return solution.getClusters();
@@ -133,6 +136,7 @@ public class PSO {
 		double fit = p.calcFitness(data);
 		System.out.println("Best fitness: " + fit);
 		
+		p.print();
 		return p;
 	}
 	
@@ -146,6 +150,7 @@ public class PSO {
 		ArrayList<ArrayList<Double>> pbest = p.getPersonalBest();
 		
 		// calculates position update for each dimension of each cluster
+		// TODO: maybe this is the problem?
 		for (int c = 0; c < position.size(); c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < position.get(c).size(); d++){

@@ -81,7 +81,8 @@ public class Particle {
 		for (int c = 0; c < numClusters; c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++){
-				v.add(0.0);
+				//v.add(0.0);
+				v.add(Math.random());
 			}
 			velocity.add(v);
 		}
@@ -95,10 +96,16 @@ public class Particle {
 		// minimization of distance
 		double min = Double.MAX_VALUE;
 		int minIndex = 0;
+		
+		// TODO: testing, remove
+	//	System.out.println();
+	//	print();
 
 		// iterates through all clusters in this particle
 		for (int c = 0; c < numClusters; c++) {
 			double dist = calcDistToCentroid(c, z.getData());
+			// TODO: testing, remove
+			//System.out.println("Dist to " + c + " = " + calcDistToCentroid(c, z.getData()));
 			// System.out.println(c + " dist: " + dist);
 			// finds minimum distance
 			if (dist < min) {
@@ -127,6 +134,7 @@ public class Particle {
 		double sum = 0;
 		for (int i = 0; i < numDimensions; i++) {
 			sum += Math.pow(z.get(i) - centroids.get(index).getCentroid().get(i), 2);
+			//System.out.println("added " + z.get(i) + " - " + centroids.get(index).getCentroid().get(i) + " sq");
 		}
 		sum = Math.sqrt(sum);
 		return sum;
@@ -157,6 +165,8 @@ public class Particle {
 		}
 		
 		fitness = sum / centroids.size();
+		// TODO: testing, remove
+		System.out.println("fitness: " + fitness);
 
 		// handle personal best - recall, this is a min problem
 		if (fitness < bestFitness) {

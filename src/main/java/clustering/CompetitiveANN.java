@@ -214,6 +214,8 @@ public class CompetitiveANN {
 					p.getChildren().remove(n);
 					n.getParents().remove(p);
 				}
+				 // TODO; fix this
+
 				toPrune.add(n);
 			}
 		}
