@@ -68,13 +68,13 @@ public class PSO {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 3) {	
+		while (count < 100) {	
 			System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
 				System.out.println();
-				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARTICLE:" + pcount);
+				//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PARTICLE:" + pcount);
 				for (Datum z : data) {
 					int cluster = p.findBestCluster(z);
 					// TODO: testing, remove
@@ -131,7 +131,7 @@ public class PSO {
 		for (Datum z : data) {
 			int cluster = p.findBestCluster(z);
 			// TODO: testing, remove
-			//System.out.println(z.getData().get(0) + " belongs in " + cluster);
+			System.out.println(z.getData().get(0) + " belongs in " + cluster);
 		}
 		double fit = p.calcFitness(data);
 		System.out.println("Best fitness: " + fit);

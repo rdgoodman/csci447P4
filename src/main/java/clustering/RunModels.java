@@ -21,7 +21,8 @@ public class RunModels {
 				String str = s.nextLine();
 				String[] numStr = str.split(",");
 				
-				double[] nums = new double[numStr.length];
+				// TODO: -1 because we don't want to include index
+				double[] nums = new double[numStr.length-1];
 				
 				for (int i = 0; i < nums.length; i++){
 					nums[i] = Double.valueOf(numStr[i]);
@@ -58,7 +59,7 @@ public class RunModels {
 			
 			System.out.println();
 			System.out.println();
-			soln.print();
+			//soln.print();
 			System.out.println();
 			soln.calcCohesion();
 			soln.calcSeparation();
