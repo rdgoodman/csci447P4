@@ -62,13 +62,9 @@ public class Particle {
 			ArrayList<Double> vector = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
-				double random = Math.random()/100;
-//				double prob = Math.random();
-//				if (prob > 0.5) {
+				double random = Math.random();
 					vector.add(random);
-//				} else {
-//					vector.add(-1 * random);
-//				}
+
 			}
 			centroids.add(new Cluster(vector, c));
 		}
@@ -81,8 +77,12 @@ public class Particle {
 		for (int c = 0; c < numClusters; c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++){
-				//v.add(0.0);
-				v.add(Math.random());
+				double prob = Math.random();
+				if(prob < .5){
+					v.add(Math.random());
+				} else {
+					v.add(Math.random() * -1);
+				}
 			}
 			velocity.add(v);
 		}
@@ -156,7 +156,7 @@ public class Particle {
 	 * 
 	 * @return
 	 */
-	protected double calcFitness(ArrayList<Datum> data) {
+	protected double calcFitness() {
 		// see "Data Clustering using Particle Swarm Optimization"
 		// equation 8
 		double sum = 0;
@@ -166,18 +166,15 @@ public class Particle {
 			}
 		}
 		
+		// divide by number of clusters
 		fitness = sum / centroids.size();
-		// TODO: testing, remove
-		//System.out.println("fitness: " + fitness);
 
 		// handle personal best - recall, this is a min problem
 		if (fitness < bestFitness) {
-			//System.out.println("%%%%%%% NEW P BEST %%%%%%%");
 			bestFitness = fitness;
 			pbest_store = copyBest();
 		}
 
-		// divide by number of clusters
 		return fitness;
 	}
 	
@@ -206,12 +203,12 @@ public class Particle {
 
 		for (int c = 0; c < numClusters; c++){
 			for (int d = 0; d < numDimensions; d++){
-				centroids.get(c).getCentroid().set(d, velocityUpdate.get(c).get(d) * chi);
+				centroids.get(c).getCentroid().set(d, velocityUpdate.get(c).get(d) + centroids.get(c).getCentroid().get(d));// * chi);
 				// TODO: don't go out of bounds
 				if (centroids.get(c).getCentroid().get(d) < 0){
-					centroids.get(c).getCentroid().set(d,0.0);					
+					centroids.get(c).getCentroid().set(d, 0.0);					
 				} else if (centroids.get(c).getCentroid().get(d) > 1){
-					centroids.get(c).getCentroid().set(d,1.0);
+					centroids.get(c).getCentroid().set(d, 1.0);
 				}
 			}
 		}
