@@ -1,5 +1,6 @@
 package clustering;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ClusterSet {
@@ -106,10 +107,25 @@ public class ClusterSet {
 	}
 	
 	public void print(){
-		for (Cluster c : clusters){
-			for (Datum d : c.getPts()){
-				d.print();
+//		for (Cluster c : clusters){
+//			for (Datum d : c.getPts()){
+//				d.print();
+//			}
+//		}
+		DecimalFormat threeDForm = new DecimalFormat("#.###");
+		
+		for (int i = 0; i < clusters.size(); i++){
+			System.out.println("\n");
+			System.out.println("> Cluster " + i + ", size: " + clusters.get(i).getPts().size());
+			System.out.print("    Centroid: <" );
+			ArrayList<Double> centroid = clusters.get(i).getCentroid();
+			for (int j = 0; j < centroid.size(); j++){
+				System.out.print(Double.valueOf(threeDForm.format(centroid.get(j))) + " ");
 			}
+			System.out.print(">");
+//			for(Datum d : clusters.get(i).getPts()){
+//				d.print();
+//			}
 		}
 	}
 

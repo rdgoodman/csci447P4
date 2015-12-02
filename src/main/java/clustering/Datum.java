@@ -1,5 +1,6 @@
 package clustering;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Datum {
@@ -46,10 +47,11 @@ public class Datum {
 	}
 	
 	public void print(){
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		System.out.println("Cluster: " + cIndex);
 		System.out.print("< ");
 		for (int i = 0; i < inputs.size(); i++){
-			System.out.print(inputs.get(i) + "  ");
+			System.out.print(Double.valueOf(twoDForm.format(inputs.get(i))) + "  ");
 		}
 		System.out.println(">");
 	}

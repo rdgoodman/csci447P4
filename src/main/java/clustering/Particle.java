@@ -62,8 +62,8 @@ public class Particle {
 			ArrayList<Double> vector = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
-				double random = Math.random();
-				double prob = Math.random();
+				double random = Math.random()/100;
+//				double prob = Math.random();
 //				if (prob > 0.5) {
 					vector.add(random);
 //				} else {
@@ -131,12 +131,14 @@ public class Particle {
 	 *            data vector
 	 */
 	private double calcDistToCentroid(int index, ArrayList<Double> z) {
+		//System.out.println("index: " + index);
 		double sum = 0;
 		for (int i = 0; i < numDimensions; i++) {
 			sum += Math.pow(z.get(i) - centroids.get(index).getCentroid().get(i), 2);
 			//System.out.println("added " + z.get(i) + " - " + centroids.get(index).getCentroid().get(i) + " sq");
 		}
 		sum = Math.sqrt(sum);
+		//System.out.println("TOTAL DIST IS EQUAL TO " + sum);
 		return sum;
 	}
 
@@ -166,7 +168,7 @@ public class Particle {
 		
 		fitness = sum / centroids.size();
 		// TODO: testing, remove
-		System.out.println("fitness: " + fitness);
+		//System.out.println("fitness: " + fitness);
 
 		// handle personal best - recall, this is a min problem
 		if (fitness < bestFitness) {

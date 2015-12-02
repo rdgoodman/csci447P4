@@ -35,10 +35,12 @@ public class RunModels {
 					d.add(nums[i]);
 				}				
 				data.add(new Datum(d));
+				
 			}
+			System.out.println("Data: " + data.size());
 			
 			// try pso 			
-			PSO pso = new PSO(0.5, 0.5, 0.5, 15, 5, dataSize, 0.5);
+			PSO pso = new PSO(0.5, 0.5, 0.5, 10, 10, dataSize, 0.5);
 			ClusterSet soln = new ClusterSet(pso.run(data));
 			
 //			// try competitiveANN
@@ -52,14 +54,14 @@ public class RunModels {
 //					train.add(d);
 //				}
 //			}
-//			CompetitiveANN net = new CompetitiveANN(0.5, 11, 5);
+//			CompetitiveANN net = new CompetitiveANN(0.5, 10, 5);
 //			ClusterSet soln = new ClusterSet(net.run(train, test));
 			
 			
 			
 			System.out.println();
 			System.out.println();
-			//soln.print();
+			soln.print();
 			System.out.println();
 			soln.calcCohesion();
 			soln.calcSeparation();
