@@ -7,9 +7,6 @@ import java.util.ArrayList;
 
 public class CompetitiveANN {
 
-	// TODO: testing -> prune out nodes that have never had a weight update,
-	// then run instances through and assign to clusters associated with nodes
-
 	private int numDimensions;
 	private double eta;
 	private int numOutputs;
@@ -100,7 +97,7 @@ public class CompetitiveANN {
 		
 		// create a cluster for each remaining compete node
 		for (int i = 0; i < nodes.get(1).size(); i++){
-			// TODO: wtf is the centroid...? the weights?
+			// weights added as centroid, even though they're probabilities
 			clusters.add(new Cluster(nodes.get(1).get(i).getWeights(), i));
 		}
 		

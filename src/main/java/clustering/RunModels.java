@@ -42,10 +42,10 @@ public class RunModels {
 			// try pso 			
 			PSO pso = new PSO(0.5, 0.6, 0.5, 15, 5, dataSize, 0.5);
 			ClusterSet soln = new ClusterSet(pso.run(data));
-//			
+		
 			//try DBScan
 //			DBScan dbscan = new DBScan(.001, 6, dataSize);
-	//		ClusterSet soln = new ClusterSet(dbscan.run(data));
+//			ClusterSet soln = new ClusterSet(dbscan.run(data));
 						
 //			// try competitiveANN
 //			ArrayList<Datum> train = new ArrayList<Datum>();
