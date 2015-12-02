@@ -162,7 +162,7 @@ public class Particle {
 		double sum = 0;
 		for (Cluster c : centroids) {
 			for (Datum d : c.getPts()) {
-				sum += (calcDistToCentroid(c.getIndex(), d.getData()) / c.getPts().size());
+				sum += (calcDistToCentroid(c.getIndex(), d.getData()) * c.getPts().size());
 			}
 		}
 		
