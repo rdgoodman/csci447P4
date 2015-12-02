@@ -13,6 +13,7 @@ public class PSO {
 	private ArrayList<Datum> data;
 	private ArrayList<ArrayList<Double>> gbest_store;
 	private int numDimensions;
+	private double percent;
 
 	/**
 	 * 
@@ -30,12 +31,15 @@ public class PSO {
 	 *            length of input vector
 	 * @param kappa
 	 * 			  used for constriction coefficient
+	 * @param percent
+	 * 			  minimum acceptable % of data per cluster
 	 */
-	public PSO(double omega, double phi1, double phi2, int swarmSize, int numClusters, int numDimensions, double kappa) {
+	public PSO(double omega, double phi1, double phi2, int swarmSize, int numClusters, int numDimensions, double kappa, double percent) {
 		this.omega = omega;
 		this.phi1 = phi1;
 		this.phi2 = phi2;
 		this.kappa = kappa;
+		this.percent = percent;
 		
 		swarm = new ArrayList<Particle>();
 		this.numDimensions = numDimensions;
@@ -81,7 +85,7 @@ public class PSO {
 					// TODO: testing, remove
 					//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 				}
-				double fit = p.calcFitness();
+				double fit = p.calcFitness(data, percent);
 				p.clearClusters();
 				
 				// Step 2: update global best
@@ -136,7 +140,7 @@ public class PSO {
 			//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 		}
 		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
-		double fit = p.calcFitness();
+		double fit = p.calcFitness(data, percent);
 		System.out.println("Best fitness: " + fit);
 
 		return p;

@@ -93,7 +93,7 @@ public class PSOTest {
 		data.add(d2);
 		data.add(d3);
 		
-		PSO pso = new PSO(0.2, 0.5, 0.5, 3, 4, d1.getData().size(), 0.5);
+		PSO pso = new PSO(0.2, 0.5, 0.5, 3, 4, d1.getData().size(), 0.5, .1);
 		pso.print();
 		
 		ClusterSet soln = new ClusterSet(pso.run(data));
