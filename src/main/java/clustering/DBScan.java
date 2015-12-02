@@ -42,8 +42,13 @@ public class DBScan {
 
 		// Holds all visited points in the dataset, for constructing the core
 		// set
-		ArrayList<Datum> coreVisited = new ArrayList<Datum>();
+		ArrayList<Datum> visited = new ArrayList<Datum>();
 
+		// Holds all visited points in the dataset, for constructing the core
+		// set
+		ArrayList<Datum> dummyCentroid = new ArrayList<Datum>();
+		
+		
 		// first train data
 		System.out.println(">>>>> TRAINING");
 
@@ -61,10 +66,10 @@ public class DBScan {
 
 		// System.out.println("Curr pt starts as " + currPt.getData());
 
-		while (coreVisited.size() < training.size() - 1) {
+		while (visited.size() < training.size() - 1) {
 			// add this point to the list of visited points
-			if (!coreVisited.contains(currPt)) {
-				coreVisited.add(currPt);
+			if (!visited.contains(currPt)) {
+				visited.add(currPt);
 			}
 
 			for (Datum d : training) {
@@ -83,12 +88,57 @@ public class DBScan {
 			// pick a new point in dataset to serve as core
 			currPt = training.get(iterator);
 			iterator++;
-			//clear the border set, because we are looking at a new core
+			// clear the border set, because we are looking at a new core
 			border.clear();
 		} // end while, now all points are categorized
 
-		for (Datum d: core) {
-			System.out.println(d);
+		// for (Datum d: core) {
+		// System.out.println(d);
+		// }
+
+		// the label associated with the first cluster
+		int currClustLbl = 0;
+		visited.clear();
+						
+		while (visited.size() < core.size() - 1) {		
+			
+			for (Datum p : core) {
+
+				// if the data does not have a cluster label yet, give it one
+				if (p.getClusterIndex() == 0) {
+					// add to cluster
+					// WARNING, not a real centroid - is there a better way to
+					// do this?
+					clusters.add(new Cluster(p.getData(), currClustLbl));
+					clusters.get(currClustLbl).addPoint(p);
+					
+					visited.add(p);
+					
+					// check all points in dataset, if within epsilon of p, add
+					// to cluster
+					for (Datum p2 : training) {
+						System.out.println(currClustLbl);
+						if (p.calcDist(p2) <= epsilon) {
+							//clusters.get(currClustLbl).addPoint(p2);
+							//p2.assignToCluster(clusters.get(currClustLbl));
+							//System.out.println(clusters.get(currClustLbl));
+						} 
+
+					}
+
+					// when all points for that p added to cluster, look at the
+					// next p
+
+				}
+
+				// System.out.println("Cluster index " + p.getClusterIndex());
+				// increment
+
+					currClustLbl++;
+
+
+			}
+
 		}
 
 		return clusters;
