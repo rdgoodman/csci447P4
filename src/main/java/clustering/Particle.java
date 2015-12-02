@@ -159,7 +159,7 @@ public class Particle {
 	/**
 	 * Calculates this particle's fitness based on quantization error
 	 */
-	protected double calcFitness() {
+	protected double calcFitness(ArrayList<Datum> data, double percent) {
 		// see "Data Clustering using Particle Swarm Optimization"
 		// equation 8
 		double sum = 0;
@@ -169,7 +169,7 @@ public class Particle {
 			if (c.getPts().size() == 0){
 				fitness = Double.MAX_VALUE;
 				return fitness;
-			} else if (c.getPts().size() < 10){
+			} else if (c.getPts().size() < data.size()*percent){
 				fitness = Double.MAX_VALUE/c.getPts().size();
 				return fitness;
 			}

@@ -185,7 +185,7 @@ public class CompetitiveANN {
 		}
 
 		// TODO: testing, remove
-		print();
+		//print();
 
 		if (training) {
 			// update winner's weights
