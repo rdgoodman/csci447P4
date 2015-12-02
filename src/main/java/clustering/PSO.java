@@ -18,7 +18,7 @@ public class PSO {
 	 * 
 	 * @param omega
 	 *            multiplier on momentum/inertia
-	 * @param phi1
+	 * @param phi1f
 	 *            upper bound on multiplier on social component
 	 * @param phi2
 	 *            upper bound on multiplier on cognitive component
@@ -63,18 +63,21 @@ public class PSO {
 
 		// TODO: do we need to normalize the data?
 		this.data = data;
+		
+		// need an initial gbest
+		gbest_store = swarm.get(0).copyBest();
 
 		//while (!terminationCriterionMet()) {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 10) {	
-			System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
+		while (count < 1000) {	
+			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
 				for (Datum z : data) {
-					int cluster = p.findBestCluster(z);
+					p.findBestCluster(z);
 					// TODO: testing, remove
 					//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 				}
@@ -94,7 +97,7 @@ public class PSO {
 
 				// TODO: testing, remove
 				DecimalFormat twoDForm = new DecimalFormat("#.##");
-				System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
+				//System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
 				System.out.println();
 				
 				// Step 3: velocity update
