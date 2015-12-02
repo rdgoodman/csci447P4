@@ -63,18 +63,21 @@ public class PSO {
 
 		// TODO: do we need to normalize the data?
 		this.data = data;
+		
+		// need an initial gbest
+		gbest_store = swarm.get(0).copyBest();
 
 		//while (!terminationCriterionMet()) {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 1000) {	
+		while (count < 10000) {	
 			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
 				for (Datum z : data) {
-					int cluster = p.findBestCluster(z);
+					p.findBestCluster(z);
 					// TODO: testing, remove
 					//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 				}
@@ -93,7 +96,7 @@ public class PSO {
 				}
 
 				// TODO: testing, remove
-				//DecimalFormat twoDForm = new DecimalFormat("#.##");
+				DecimalFormat twoDForm = new DecimalFormat("#.##");
 				//System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
 				//System.out.println();
 				
@@ -152,7 +155,7 @@ public class PSO {
 		for (int c = 0; c < position.size(); c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < position.get(c).size(); d++){
-				// TODO vi and xi are not the same
+				// calculates momentum, social, global components
 				double momentum = omega * v_old.get(c).get(d);
 				double social = Math.random() * phi1 * (gbest_store.get(c).get(d) - position.get(c).get(d));
 				double global = Math.random() * phi2 * (pbest.get(c).get(d) - position.get(c).get(d));

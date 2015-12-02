@@ -62,8 +62,13 @@ public class Particle {
 			ArrayList<Double> vector = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
-				double random = Math.random();
+				double random = Math.random()/100;
+				double p = Math.random();
+				if (p < 0.1){
+					vector.add(0.0);
+				} else {
 					vector.add(random);
+				}
 
 			}
 			centroids.add(new Cluster(vector, c));
@@ -153,14 +158,23 @@ public class Particle {
 
 	/**
 	 * Calculates this particle's fitness based on quantization error
-	 * 
-	 * @return
 	 */
 	protected double calcFitness() {
 		// see "Data Clustering using Particle Swarm Optimization"
 		// equation 8
 		double sum = 0;
 		for (Cluster c : centroids) {
+			
+			// penalize empty clusters
+			if (c.getPts().size() == 0){
+				fitness = Double.MAX_VALUE;
+				return fitness;
+			} else if (c.getPts().size() < 10){
+				fitness = Double.MAX_VALUE/c.getPts().size();
+				return fitness;
+			}
+			
+			
 			for (Datum d : c.getPts()) {
 				sum += (calcDistToCentroid(c.getIndex(), d.getData()) / c.getPts().size());
 			}
