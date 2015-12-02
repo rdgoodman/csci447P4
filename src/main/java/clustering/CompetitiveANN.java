@@ -212,11 +212,12 @@ public class CompetitiveANN {
 				// remove connections
 				for (Neuron p : n.getParents()){
 					p.getChildren().remove(n);
-					n.getParents().remove(p);
+					//n.getParents().remove(p);
 				}
 				 // TODO; fix this
 
 				toPrune.add(n);
+				n.getParents().clear();
 			}
 		}
 		// remove node from network entirely
