@@ -91,6 +91,7 @@ public class CompetitiveANN {
 		training = false;
 		
 		// trim off unused compete nodes
+		prune();
 		
 		// then test
 		System.out.println();
