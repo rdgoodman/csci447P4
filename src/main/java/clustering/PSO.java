@@ -18,7 +18,7 @@ public class PSO {
 	 * 
 	 * @param omega
 	 *            multiplier on momentum/inertia
-	 * @param phi1f
+	 * @param phi1
 	 *            upper bound on multiplier on social component
 	 * @param phi2
 	 *            upper bound on multiplier on cognitive component
@@ -71,7 +71,7 @@ public class PSO {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 1000) {	
+		while (count < 10000) {	
 			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
@@ -98,7 +98,7 @@ public class PSO {
 				// TODO: testing, remove
 				DecimalFormat twoDForm = new DecimalFormat("#.##");
 				//System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
-				System.out.println();
+				//System.out.println();
 				
 				// Step 3: velocity update
 				p.adjustPosition(calcVelocityUpdate(p), kappa, phi1 + phi2);	
