@@ -68,8 +68,8 @@ public class PSO {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 1000) {	
-			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
+		while (count < 10) {	
+			System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
@@ -93,9 +93,9 @@ public class PSO {
 				}
 
 				// TODO: testing, remove
-				//DecimalFormat twoDForm = new DecimalFormat("#.##");
-				//System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
-				//System.out.println();
+				DecimalFormat twoDForm = new DecimalFormat("#.##");
+				System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
+				System.out.println();
 				
 				// Step 3: velocity update
 				p.adjustPosition(calcVelocityUpdate(p), kappa, phi1 + phi2);	
@@ -152,7 +152,7 @@ public class PSO {
 		for (int c = 0; c < position.size(); c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < position.get(c).size(); d++){
-				// TODO vi and xi are not the same
+				// calculates momentum, social, global components
 				double momentum = omega * v_old.get(c).get(d);
 				double social = Math.random() * phi1 * (gbest_store.get(c).get(d) - position.get(c).get(d));
 				double global = Math.random() * phi2 * (pbest.get(c).get(d) - position.get(c).get(d));

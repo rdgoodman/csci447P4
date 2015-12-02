@@ -63,7 +63,12 @@ public class Particle {
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
 				double random = Math.random();
+				double p = Math.random();
+				if (p < 0.1){
+					vector.add(0.0);
+				} else {
 					vector.add(random);
+				}
 
 			}
 			centroids.add(new Cluster(vector, c));
