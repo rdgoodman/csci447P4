@@ -172,7 +172,6 @@ public class Particle {
 
 		// handle personal best - recall, this is a min problem
 		if (fitness < bestFitness) {
-			//System.out.println("%%%%%%% NEW P BEST %%%%%%%");
 			bestFitness = fitness;
 			pbest_store = copyBest();
 		}
@@ -206,7 +205,7 @@ public class Particle {
 
 		for (int c = 0; c < numClusters; c++){
 			for (int d = 0; d < numDimensions; d++){
-				centroids.get(c).getCentroid().set(d, velocityUpdate.get(c).get(d) /*** chi*/);
+				centroids.get(c).getCentroid().set(d, velocityUpdate.get(c).get(d));// * chi);
 				// TODO: don't go out of bounds
 				if (centroids.get(c).getCentroid().get(d) < 0){
 					centroids.get(c).getCentroid().set(d,0.0);					

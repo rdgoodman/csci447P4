@@ -132,7 +132,7 @@ public class PSO {
 		for (Datum z : data) {
 			int cluster = p.findBestCluster(z);
 			// TODO: testing, remove
-			System.out.println(z.getData().get(0) + " belongs in " + cluster);
+			//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 		}
 		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
 		double fit = p.calcFitness(data);

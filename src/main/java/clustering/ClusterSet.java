@@ -112,7 +112,7 @@ public class ClusterSet {
 //				d.print();
 //			}
 //		}
-		DecimalFormat threeDForm = new DecimalFormat("#.###");
+		DecimalFormat fourDForm = new DecimalFormat("#.####");
 		
 		for (int i = 0; i < clusters.size(); i++){
 			System.out.println("\n");
@@ -120,7 +120,7 @@ public class ClusterSet {
 			System.out.print("    Centroid: <" );
 			ArrayList<Double> centroid = clusters.get(i).getCentroid();
 			for (int j = 0; j < centroid.size(); j++){
-				System.out.print(Double.valueOf(threeDForm.format(centroid.get(j))) + " ");
+				System.out.print(Double.valueOf(fourDForm.format(centroid.get(j))) + " ");
 			}
 			System.out.print(">");
 //			for(Datum d : clusters.get(i).getPts()){

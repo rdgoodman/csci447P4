@@ -40,7 +40,7 @@ public class RunModels {
 			System.out.println("Data: " + data.size());
 			
 			// try pso 			
-			PSO pso = new PSO(0.5, 0.5, 0.5, 15, 5, dataSize, 0.5);
+			PSO pso = new PSO(0.5, 0.6, 0.5, 15, 5, dataSize, 0.5);
 			ClusterSet soln = new ClusterSet(pso.run(data));
 //			
 			//try DBScan
