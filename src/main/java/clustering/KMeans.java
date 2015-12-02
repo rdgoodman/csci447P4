@@ -12,6 +12,7 @@ public class KMeans {
 	int gens;
 	
 	private Distance d = new Distance();
+	
 	public KMeans(int k, int gens){
 		this.k = k;
 		this.gens = gens;
@@ -30,7 +31,7 @@ public class KMeans {
                 for (int c = 0; c < clusters.size(); c++) {//for each cluster
                     //System.out.println("iteration: "+ i + ", datapoint: " + j + ", cluster: " + c);
 
-                    double tempD = d.calculateDistance(data.get(j), clusters.get(c).getCentroid(), dim);//find closest cluster
+                    double tempD = d.calculateDistance(data.get(j).getData(), clusters.get(c).getCentroid(), dim);//find closest cluster
                     //System.out.println(" i: " + i + ", j: " + j + ", c: " + c+", tempD: " + tempD + ", curD: " + curD + ", input: " + in.get(j));
                     if (tempD < curD) {
                         smallestCluster = c;
