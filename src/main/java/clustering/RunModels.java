@@ -39,26 +39,26 @@ public class RunModels {
 			System.out.println("Data: " + data.size());
 			
 			// try pso 			
-			PSO pso = new PSO(0.2, 0.2, 0.2, 10, 5, dataSize, 0.5, .15);
-			ClusterSet soln = new ClusterSet(pso.run(data));
+//			PSO pso = new PSO(0.2, 0.2, 0.2, 10, 5, dataSize, 0.5, .15);
+//			ClusterSet soln = new ClusterSet(pso.run(data));
 		
 			//try DBScan
 //			DBScan dbscan = new DBScan(.001, 6, dataSize);
 //			ClusterSet soln = new ClusterSet(dbscan.run(data));
 						
 //			// try competitiveANN
-//			ArrayList<Datum> train = new ArrayList<Datum>();
-//			ArrayList<Datum> test = new ArrayList<Datum>();
-//			for (Datum d : data){
-//				double p = Math.random();
-//				if (p < .1){
-//					test.add(d);
-//				} else {
-//					train.add(d);
-//				}
-//			}
-//			CompetitiveANN net = new CompetitiveANN(0.8, 11, 10);
-//			ClusterSet soln = new ClusterSet(net.run(train, test));
+			ArrayList<Datum> train = new ArrayList<Datum>();
+			ArrayList<Datum> test = new ArrayList<Datum>();
+			for (Datum d : data){
+				double p = Math.random();
+				if (p < .3){
+					test.add(d);
+				} else {
+					train.add(d);
+				}
+			}
+			CompetitiveANN net = new CompetitiveANN(0.2, 11, 10);
+			ClusterSet soln = new ClusterSet(net.run(train, test));
 					
 			System.out.println();
 			System.out.println();

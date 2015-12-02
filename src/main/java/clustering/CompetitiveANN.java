@@ -1,6 +1,7 @@
 package clustering;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 // largely relies on http://page.mi.fu-berlin.de/rojas/neural/chapter/K5.pdf
 // and Engelbrecht p60
@@ -12,7 +13,7 @@ public class CompetitiveANN {
 	private int numOutputs;
 	private ArrayList<ArrayList<Neuron>> nodes;
 	private ArrayList<Double> inputs;
-	
+
 	private boolean training = true;
 
 	/**
@@ -49,68 +50,74 @@ public class CompetitiveANN {
 		normalize(this.inputs);
 		giveInputs();
 	}
-	
-	private void giveInputs(){
+
+	private void giveInputs() {
 		// clear inputs for compete nodes
-		for (Neuron n : nodes.get(1)){
+		for (Neuron n : nodes.get(1)) {
 			n.clearInputs();
 		}
-		
+
 		// set output for input nodes
 		for (int i = 0; i < numDimensions; i++) {
 			nodes.get(0).get(i).setOutput(inputs.get(i));
 		}
 		// set inputs
-		for(int i = 0; i < nodes.get(0).size(); i++){
-			for (int c = 0; c < nodes.get(1).size(); c++){
+		for (int i = 0; i < nodes.get(0).size(); i++) {
+			for (int c = 0; c < nodes.get(1).size(); c++) {
 				nodes.get(1).get(c).addInput(nodes.get(0).get(i).getOutput());
 			}
 		}
 	}
 
 	/**
-	 * Runs train and test process given two (non-overlapping) datasets
-	 * WARNING: CANNOT INTERPRET RETURNED CLUSTERS' CENTROIDS AS YOU USUALLY WOULD
+	 * Runs train and test process given two (non-overlapping) datasets WARNING:
+	 * CANNOT INTERPRET RETURNED CLUSTERS' CENTROIDS AS YOU USUALLY WOULD
 	 * 
-	 * @param train Training set
-	 * @param test Test set
+	 * @param train
+	 *            Training set
+	 * @param test
+	 *            Test set
 	 * @return Clustered data
 	 */
-	public ArrayList<Cluster> run(ArrayList<Datum> train, ArrayList<Datum> test){
+	public ArrayList<Cluster> run(ArrayList<Datum> train, ArrayList<Datum> test) {
 		// first train
 		System.out.println(">>>>> TRAINING");
-		for (Datum d : train){
-			// set inputs
-			setInputs(d.getData());
-			int index = generateOutputs();
-			System.out.println("Winner: " + index);
+		// go through 3 times
+		for (int iteration = 0; iteration < 10; iteration++) {
+			Collections.shuffle(train);
+			for (Datum d : train) {
+				// set inputs
+				setInputs(d.getData());
+				int index = generateOutputs();
+				//System.out.println("Winner: " + index);
+			}
+			training = false;
 		}
-		training = false;
-		
+
 		// trim off unused compete nodes
 		prune();
-		
+
 		// then test
 		System.out.println();
 		System.out.println(">>>>> TESTING");
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
-		
+
 		// create a cluster for each remaining compete node
-		for (int i = 0; i < nodes.get(1).size(); i++){
+		for (int i = 0; i < nodes.get(1).size(); i++) {
 			// weights added as centroid, even though they're probabilities
 			clusters.add(new Cluster(nodes.get(1).get(i).getWeights(), i));
 		}
-		
-		for(Datum d : test){
+
+		for (Datum d : test) {
 			setInputs(d.getData());
 			int index = generateOutputs();
 			// assign this datum to the cluster
 			clusters.get(index).addPoint(d);
-			//d.print();
-			//System.out.println("Assigned to cluster " + index);
+			// d.print();
+			// System.out.println("Assigned to cluster " + index);
 		}
-		
-		for (Cluster c: clusters){
+
+		for (Cluster c : clusters) {
 			c.print();
 		}
 		return clusters;
@@ -185,7 +192,7 @@ public class CompetitiveANN {
 		}
 
 		// TODO: testing, remove
-		//print();
+		// print();
 
 		if (training) {
 			// update winner's weights
@@ -196,34 +203,32 @@ public class CompetitiveANN {
 		return maxIndex;
 
 	}
-	
-	
+
 	/**
 	 * Removes nodes/clusters that never have their weights updated
 	 */
-	private void prune(){
+	private void prune() {
 		ArrayList<Neuron> toPrune = new ArrayList<Neuron>();
-		for (Neuron n : nodes.get(1)){
-			if (!n.isUsed()){
+		for (Neuron n : nodes.get(1)) {
+			if (!n.isUsed()) {
 				System.out.println("Not used");
 				// remove connections
-				for (Neuron p : n.getParents()){
+				for (Neuron p : n.getParents()) {
 					p.getChildren().remove(n);
-					//n.getParents().remove(p);
+					// n.getParents().remove(p);
 				}
-				 // TODO; fix this
+				// TODO; fix this
 
 				toPrune.add(n);
 				n.getParents().clear();
 			}
 		}
 		// remove node from network entirely
-		for (Neuron n : toPrune){
+		for (Neuron n : toPrune) {
 			nodes.get(1).remove(n);
 		}
-		
+
 	}
-	
 
 	/**
 	 * Prints net for testing purposes
