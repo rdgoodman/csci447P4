@@ -44,11 +44,6 @@ public class DBScan {
 		// set
 		ArrayList<Datum> visited = new ArrayList<Datum>();
 
-		// Holds all visited points in the dataset, for constructing the core
-		// set
-		ArrayList<Datum> dummyCentroid = new ArrayList<Datum>();
-		
-		
 		// first train data
 		System.out.println(">>>>> TRAINING");
 
@@ -99,47 +94,87 @@ public class DBScan {
 		// the label associated with the first cluster
 		int currClustLbl = 0;
 		visited.clear();
-						
-		while (visited.size() < core.size() - 1) {		
-			
-			for (Datum p : core) {
 
-				// if the data does not have a cluster label yet, give it one
-				if (p.getClusterIndex() == 0) {
-					// add to cluster
-					// WARNING, not a real centroid - is there a better way to
-					// do this?
+		while (visited.size() < core.size() - 1) {
+
+			// if the data does not have a cluster label yet, give it one
+			for (Datum p : core) {
+				if (clusters.contains(p)) {
+					// do nothing, move along pal
+				} else {
+					// add to the cluster, add to the list of visited items
 					clusters.add(new Cluster(p.getData(), currClustLbl));
 					clusters.get(currClustLbl).addPoint(p);
-					
 					visited.add(p);
-					
-					// check all points in dataset, if within epsilon of p, add
-					// to cluster
-					for (Datum p2 : training) {
-						System.out.println(currClustLbl);
-						if (p.calcDist(p2) <= epsilon) {
-							//clusters.get(currClustLbl).addPoint(p2);
-							//p2.assignToCluster(clusters.get(currClustLbl));
-							//System.out.println(clusters.get(currClustLbl));
-						} 
 
-					}
-
-					// when all points for that p added to cluster, look at the
-					// next p
+					for (Datum q : training) {
+						if (clusters.contains(q)) {
+							// again, is already in cluster, don't double add
+						} else if (p.calcDist(q) <= epsilon) {
+							visited.add(q);
+							clusters.get(currClustLbl).addPoint(q);	
+							
+						
+//							
+//							if (core.contains(q)) {
+//								//remove it
+//								core.remove(q);
+//							} 
+							
+						} // end if
+					} // end for
 
 				}
 
-				// System.out.println("Cluster index " + p.getClusterIndex());
-				// increment
-
-					currClustLbl++;
-
-
+				// increment the cluster label
+				currClustLbl++;
 			}
 
+			// for (Datum q: training) {
+			// clusters.get(currClustLbl).addPoint(q);
+			// }
+			//
+			//
+			// for (Cluster c: clusters) {
+			// System.out.println(c);
+			// }
+
 		}
+		// if (visited.contains(p)) {
+		// // add to cluster
+		// // WARNING, not a real centroid - is there a better way to
+		// // do this?
+		// clusters.add(new Cluster(p.getData(), currClustLbl));
+		// clusters.get(currClustLbl).addPoint(p);
+		// System.out.println("Label " + currClustLbl);
+		// visited.add(p);
+		//
+		// // check all points in dataset, if within epsilon of p, add
+		// // to cluster
+		// for (Datum p2 : training) {
+		// System.out.println(currClustLbl);
+		// if (p.calcDist(p2) <= epsilon) {
+		// System.out.println("Label in calc distance" + currClustLbl);
+		// //clusters.get(currClustLbl).addPoint(p2);
+		// //p2.assignToCluster(clusters.get(currClustLbl));
+		// //System.out.println(clusters.get(currClustLbl));
+		// }
+		//
+		// }
+
+		// when all points for that p added to cluster, look at the
+		// next p
+
+		// }
+
+		// System.out.println("Cluster index " + p.getClusterIndex());
+		// increment
+
+		// currClustLbl++;
+
+		// }
+
+		// }
 
 		return clusters;
 	}
