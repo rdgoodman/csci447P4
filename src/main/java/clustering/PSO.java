@@ -13,6 +13,7 @@ public class PSO {
 	private ArrayList<Datum> data;
 	private ArrayList<ArrayList<Double>> gbest_store;
 	private int numDimensions;
+	private double percent;
 
 	/**
 	 * 
@@ -30,12 +31,15 @@ public class PSO {
 	 *            length of input vector
 	 * @param kappa
 	 * 			  used for constriction coefficient
+	 * @param percent
+	 * 			  minimum acceptable % of data per cluster
 	 */
-	public PSO(double omega, double phi1, double phi2, int swarmSize, int numClusters, int numDimensions, double kappa) {
+	public PSO(double omega, double phi1, double phi2, int swarmSize, int numClusters, int numDimensions, double kappa, double percent) {
 		this.omega = omega;
 		this.phi1 = phi1;
 		this.phi2 = phi2;
 		this.kappa = kappa;
+		this.percent = percent;
 		
 		swarm = new ArrayList<Particle>();
 		this.numDimensions = numDimensions;
@@ -63,22 +67,25 @@ public class PSO {
 
 		// TODO: do we need to normalize the data?
 		this.data = data;
+		
+		// need an initial gbest
+		gbest_store = swarm.get(0).copyBest();
 
 		//while (!terminationCriterionMet()) {
 		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
 		
-		while (count < 1000) {	
+		while (count < 10000) {	
 			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
 				for (Datum z : data) {
-					int cluster = p.findBestCluster(z);
+					p.findBestCluster(z);
 					// TODO: testing, remove
 					//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 				}
-				double fit = p.calcFitness();
+				double fit = p.calcFitness(data, percent);
 				p.clearClusters();
 				
 				// Step 2: update global best
@@ -93,7 +100,7 @@ public class PSO {
 				}
 
 				// TODO: testing, remove
-				//DecimalFormat twoDForm = new DecimalFormat("#.##");
+				DecimalFormat twoDForm = new DecimalFormat("#.##");
 				//System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
 				//System.out.println();
 				
@@ -133,7 +140,7 @@ public class PSO {
 			//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 		}
 		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
-		double fit = p.calcFitness();
+		double fit = p.calcFitness(data, percent);
 		System.out.println("Best fitness: " + fit);
 
 		return p;
@@ -152,7 +159,7 @@ public class PSO {
 		for (int c = 0; c < position.size(); c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < position.get(c).size(); d++){
-				// TODO vi and xi are not the same
+				// calculates momentum, social, global components
 				double momentum = omega * v_old.get(c).get(d);
 				double social = Math.random() * phi1 * (gbest_store.get(c).get(d) - position.get(c).get(d));
 				double global = Math.random() * phi2 * (pbest.get(c).get(d) - position.get(c).get(d));

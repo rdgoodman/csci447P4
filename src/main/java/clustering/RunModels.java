@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class RunModels {
 
 	public static void main(String[] args){
-		File file = new File("src/main/resources/wineTest_first100.csv");
+		File file = new File("src/main/resources/wineTest_reduced.txt");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 		
 		try {
@@ -19,10 +19,9 @@ public class RunModels {
 			// create Datums
 			while(s.hasNextLine()){
 				String str = s.nextLine();
-				String[] numStr = str.split(",");
+				String[] numStr = str.split("\t");
 				
-				// TODO: -1 because we don't want to include index
-				double[] nums = new double[numStr.length-1];
+				double[] nums = new double[numStr.length];
 				
 				for (int i = 0; i < nums.length; i++){
 					nums[i] = Double.valueOf(numStr[i]);
@@ -40,7 +39,7 @@ public class RunModels {
 			System.out.println("Data: " + data.size());
 			
 			// try pso 			
-			PSO pso = new PSO(0.5, 0.6, 0.5, 15, 5, dataSize, 0.5);
+			PSO pso = new PSO(0.2, 0.2, 0.2, 10, 5, dataSize, 0.5, .15);
 			ClusterSet soln = new ClusterSet(pso.run(data));
 		
 			//try DBScan
@@ -52,13 +51,13 @@ public class RunModels {
 //			ArrayList<Datum> test = new ArrayList<Datum>();
 //			for (Datum d : data){
 //				double p = Math.random();
-//				if (p < .33){
+//				if (p < .1){
 //					test.add(d);
 //				} else {
 //					train.add(d);
 //				}
 //			}
-//			CompetitiveANN net = new CompetitiveANN(0.2, 10, 5);
+//			CompetitiveANN net = new CompetitiveANN(0.8, 11, 10);
 //			ClusterSet soln = new ClusterSet(net.run(train, test));
 					
 			System.out.println();
