@@ -78,7 +78,7 @@ public class PSO {
 					// TODO: testing, remove
 					//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 				}
-				double fit = p.calcFitness(data);
+				double fit = p.calcFitness();
 				p.clearClusters();
 				
 				// Step 2: update global best
@@ -88,7 +88,7 @@ public class PSO {
 					gbest_store = p.copyBest();
 					minGlobalFitness = fit;
 					
-					//System.out.println("%%%%%%% NEW G BEST %%%%%%%");
+					System.out.println("%%%%%%% NEW G BEST %%%%%%%");
 					evaluateGBest();
 				}
 
@@ -106,8 +106,10 @@ public class PSO {
 		}
 
 		// reassign/reevaluate g_best & return
-		System.out.println("RETURN: ");
+		System.out.println();
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& RETURN: ");
 		Particle solution = evaluateGBest();
+		System.out.println();
 		solution.print();
 		return solution.getClusters();
 	}
@@ -130,9 +132,10 @@ public class PSO {
 			// TODO: testing, remove
 			//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 		}
-		double fit = p.calcFitness(data);
+		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
+		double fit = p.calcFitness();
 		System.out.println("Best fitness: " + fit);
-		
+
 		return p;
 	}
 	

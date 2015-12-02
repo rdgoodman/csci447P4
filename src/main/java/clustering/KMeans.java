@@ -1,3 +1,4 @@
+
 package clustering;
 
 import java.io.BufferedReader;
@@ -76,15 +77,6 @@ public class KMeans {
 //                            count++;
 //                            //ystem.out.println(count);
 //                        }
-//                    }
-//                    if (count != 0) {
-//                        //System.out.println("DimAvg: " + dimAvg + ", count: " + count + ", result: " + dimAvg / count);
-//                        dimAvg = dimAvg / count;
-//                    } else {
-//                        dimAvg = 0;
-//                    }
-//                    clusters.get(c).set(l, dimAvg);
-//                }
             }
             //System.out.println(i + " : " + clusters);
         }

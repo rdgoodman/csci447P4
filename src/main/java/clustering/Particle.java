@@ -57,18 +57,14 @@ public class Particle {
 	 */
 	private void initialize() {
 		// TODO: what are the potential ranges for the centroids?
-		// going to assume [-1, 1] for now
+		// going to assume [0, 1] for now for normalized data
 		for (int c = 0; c < numClusters; c++) {
 			ArrayList<Double> vector = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
 				double random = Math.random();
-				double prob = Math.random();
-				if (prob > 0.5) {
 					vector.add(random);
-				} else {
-					vector.add(-1 * random);
-				}
+
 			}
 			centroids.add(new Cluster(vector, c));
 		}
@@ -81,7 +77,12 @@ public class Particle {
 		for (int c = 0; c < numClusters; c++){
 			ArrayList<Double> v = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++){
-				v.add(0.0);
+				double prob = Math.random();
+				if(prob < .5){
+					v.add(Math.random());
+				} else {
+					v.add(Math.random() * -1);
+				}
 			}
 			velocity.add(v);
 		}
@@ -95,10 +96,16 @@ public class Particle {
 		// minimization of distance
 		double min = Double.MAX_VALUE;
 		int minIndex = 0;
+		
+		// TODO: testing, remove
+	//	System.out.println();
+	//	print();
 
 		// iterates through all clusters in this particle
 		for (int c = 0; c < numClusters; c++) {
 			double dist = calcDistToCentroid(c, z.getData());
+			// TODO: testing, remove
+			//System.out.println("Dist to " + c + " = " + calcDistToCentroid(c, z.getData()));
 			// System.out.println(c + " dist: " + dist);
 			// finds minimum distance
 			if (dist < min) {
@@ -124,11 +131,14 @@ public class Particle {
 	 *            data vector
 	 */
 	private double calcDistToCentroid(int index, ArrayList<Double> z) {
+		//System.out.println("index: " + index);
 		double sum = 0;
 		for (int i = 0; i < numDimensions; i++) {
 			sum += Math.pow(z.get(i) - centroids.get(index).getCentroid().get(i), 2);
+			//System.out.println("added " + z.get(i) + " - " + centroids.get(index).getCentroid().get(i) + " sq");
 		}
 		sum = Math.sqrt(sum);
+		//System.out.println("TOTAL DIST IS EQUAL TO " + sum);
 		return sum;
 	}
 
@@ -146,7 +156,7 @@ public class Particle {
 	 * 
 	 * @return
 	 */
-	protected double calcFitness(ArrayList<Datum> data) {
+	protected double calcFitness() {
 		// see "Data Clustering using Particle Swarm Optimization"
 		// equation 8
 		double sum = 0;
@@ -156,16 +166,15 @@ public class Particle {
 			}
 		}
 		
+		// divide by number of clusters
 		fitness = sum / centroids.size();
 
 		// handle personal best - recall, this is a min problem
 		if (fitness < bestFitness) {
-			//System.out.println("%%%%%%% NEW P BEST %%%%%%%");
 			bestFitness = fitness;
 			pbest_store = copyBest();
 		}
 
-		// divide by number of clusters
 		return fitness;
 	}
 	
@@ -194,7 +203,13 @@ public class Particle {
 
 		for (int c = 0; c < numClusters; c++){
 			for (int d = 0; d < numDimensions; d++){
-				centroids.get(c).getCentroid().set(d, velocityUpdate.get(c).get(d) * chi);
+				centroids.get(c).getCentroid().set(d, velocityUpdate.get(c).get(d) + centroids.get(c).getCentroid().get(d));// * chi);
+				// TODO: don't go out of bounds
+				if (centroids.get(c).getCentroid().get(d) < 0){
+					centroids.get(c).getCentroid().set(d, 0.0);					
+				} else if (centroids.get(c).getCentroid().get(d) > 1){
+					centroids.get(c).getCentroid().set(d, 1.0);
+				}
 			}
 		}
 	}

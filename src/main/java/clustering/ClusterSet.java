@@ -1,5 +1,6 @@
 package clustering;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ClusterSet {
@@ -68,12 +69,14 @@ public class ClusterSet {
 	 */
 	private double calcSep(Cluster c1, Cluster c2) {
 		double sep = 0;
+		
 		for (int i = 0; i < c1.getPts().size(); i++) {
-			for (int j = i + 1; j < c2.getPts().size(); j++) {
+			for (int j = 0; j < c2.getPts().size(); j++) {
 				// calculates distance from point i in c1 to point j in c2
 				sep += c1.getPts().get(i).calcDist(c2.getPts().get(j));
 			}
 		}
+		
 		return sep;
 	}
 
@@ -104,10 +107,25 @@ public class ClusterSet {
 	}
 	
 	public void print(){
-		for (Cluster c : clusters){
-			for (Datum d : c.getPts()){
-				d.print();
+//		for (Cluster c : clusters){
+//			for (Datum d : c.getPts()){
+//				d.print();
+//			}
+//		}
+		DecimalFormat fourDForm = new DecimalFormat("#.####");
+		
+		for (int i = 0; i < clusters.size(); i++){
+			System.out.println("\n");
+			System.out.println("> Cluster " + i + ", size: " + clusters.get(i).getPts().size());
+			System.out.print("    Centroid: <" );
+			ArrayList<Double> centroid = clusters.get(i).getCentroid();
+			for (int j = 0; j < centroid.size(); j++){
+				System.out.print(Double.valueOf(fourDForm.format(centroid.get(j))) + " ");
 			}
+			System.out.print(">");
+//			for(Datum d : clusters.get(i).getPts()){
+//				d.print();
+//			}
 		}
 	}
 

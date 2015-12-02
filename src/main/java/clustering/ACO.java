@@ -1,3 +1,4 @@
+
 package clustering;
 
 import java.util.ArrayList;
@@ -6,18 +7,24 @@ import java.util.Random;
 public class ACO {
 	int k;
 	int gens;
-	public ACO(int k, int gens){
+	int agents;
+	public ACO(int k, int gens, int agents){
 		this.k = k;
 		this.gens = gens;
+		this.agents = agents;
 	}
 	
 	public ArrayList<Cluster> run(ArrayList<Datum> data){
 		ArrayList<Cluster> clusters = initializeClusters(data);
-		
+		for(int i = 0; i < gens; i++){//number of generations
+			for(int j = 0; j < agents; j++){ //number of agents
+				
+			}
+		}
 		
 		return clusters;
 	}
-	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data){
+	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data){//TODO Random scatter in toroidal grid
 		Random rand = new Random();
         //int indim = in.get(0).size(); //figure out dimensionality of input
         ArrayList<Cluster> clusters = new ArrayList(); //initalize cluster array
@@ -38,6 +45,10 @@ public class ACO {
         //clusters = trainClusters(in, clusters, 5, inDim);
         //System.out.println("end clusters: " + clusters);
         return clusters;
+	}
+	
+	private void initializeAgents(){//TODO Randomly scatter agents in toroidal grid
+		
 	}
 	
 }
