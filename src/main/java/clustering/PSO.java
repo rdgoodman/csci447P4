@@ -63,27 +63,22 @@ public class PSO {
 	 * @return best clustering
 	 */
 	public ArrayList<Cluster> run(ArrayList<Datum> data) {
-		// returns a set of Clusters corresponding to winning Particle
-
-		// TODO: do we need to normalize the data?
 		this.data = data;
 		
 		// need an initial gbest
 		gbest_store = swarm.get(0).copyBest();
-
-		//while (!terminationCriterionMet()) {
-		int count = 0;
 		double minGlobalFitness = Double.MAX_VALUE;
+
+		int iterations = 0;
 		
-		while (count < 10000) {	
+		while (iterations < 10000) {	
+			// TODO: testing, remove
 			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
 				for (Datum z : data) {
 					p.findBestCluster(z);
-					// TODO: testing, remove
-					//System.out.println(z.getData().get(0) + " belongs in " + cluster);
 				}
 				double fit = p.calcFitness(data, percent);
 				p.clearClusters();
@@ -95,26 +90,20 @@ public class PSO {
 					gbest_store = p.copyBest();
 					minGlobalFitness = fit;
 					
-					System.out.println("%%%%%%% NEW G BEST %%%%%%%");
+					// TODO: testing, remove
+					//System.out.println("%%%%%%% NEW GLOBAL BEST %%%%%%%");
 					evaluateGBest();
 				}
-
-				// TODO: testing, remove
-				DecimalFormat twoDForm = new DecimalFormat("#.##");
-				//System.out.println("Particle " + pcount + " fitness: " + Double.valueOf(twoDForm.format(fit)));
-				//System.out.println();
 				
 				// Step 3: velocity update
 				p.adjustPosition(calcVelocityUpdate(p), kappa, phi1 + phi2);	
 				
 				pcount++;
 			}
-			count++;
+			iterations++;
 		}
 
 		// reassign/reevaluate g_best & return
-		System.out.println();
-		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& RETURN: ");
 		Particle solution = evaluateGBest();
 		System.out.println();
 		solution.print();
@@ -128,20 +117,19 @@ public class PSO {
 	private Particle evaluateGBest(){
 		ArrayList<Cluster> solution = new ArrayList<Cluster>();
 		
+		// rebuilds the global best particle from the stored centroids
 		for (int c = 0; c < gbest_store.size(); c++){
 			solution.add(new Cluster(gbest_store.get(c), c));
-		}
-		
+		}		
 		Particle p = new Particle(solution);
 		
 		for (Datum z : data) {
-			int cluster = p.findBestCluster(z);
-			// TODO: testing, remove
-			//System.out.println(z.getData().get(0) + " belongs in " + cluster);
+			p.findBestCluster(z);
 		}
-		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
 		double fit = p.calcFitness(data, percent);
-		System.out.println("Best fitness: " + fit);
+		// TODO: testing, remove
+//		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
+//		System.out.println("Best fitness: " + fit);
 
 		return p;
 	}
@@ -168,11 +156,6 @@ public class PSO {
 			velocity.add(v);
 		}
 		return velocity;
-	}
-	
-	private boolean terminationCriterionMet(){
-		// TODO: decide on termination criterion
-		return false;
 	}
 
 	/**

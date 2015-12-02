@@ -82,41 +82,39 @@ public class CompetitiveANN {
 	public ArrayList<Cluster> run(ArrayList<Datum> train, ArrayList<Datum> test) {
 		// first train
 		System.out.println(">>>>> TRAINING");
-		// go through 3 times
-		for (int iteration = 0; iteration < 10; iteration++) {
+		// go through training set multiple times
+		for (int iteration = 0; iteration < 15; iteration++) {
 			Collections.shuffle(train);
 			for (Datum d : train) {
 				// set inputs
 				setInputs(d.getData());
 				int index = generateOutputs();
-				//System.out.println("Winner: " + index);
 			}
-			training = false;
 		}
+		training = false;
 
 		// trim off unused compete nodes
 		prune();
 
 		// then test
-		System.out.println();
 		System.out.println(">>>>> TESTING");
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 
 		// create a cluster for each remaining compete node
 		for (int i = 0; i < nodes.get(1).size(); i++) {
 			// weights added as centroid, even though they're probabilities
+			// (harmless since centroids aren't used for calculations after this)
 			clusters.add(new Cluster(nodes.get(1).get(i).getWeights(), i));
 		}
 
 		for (Datum d : test) {
 			setInputs(d.getData());
+			// assign this datum to a cluster
 			int index = generateOutputs();
-			// assign this datum to the cluster
 			clusters.get(index).addPoint(d);
-			// d.print();
-			// System.out.println("Assigned to cluster " + index);
 		}
 
+		// TODO: for testing purposes only
 		for (Cluster c : clusters) {
 			c.print();
 		}
@@ -211,14 +209,10 @@ public class CompetitiveANN {
 		ArrayList<Neuron> toPrune = new ArrayList<Neuron>();
 		for (Neuron n : nodes.get(1)) {
 			if (!n.isUsed()) {
-				System.out.println("Not used");
 				// remove connections
 				for (Neuron p : n.getParents()) {
 					p.getChildren().remove(n);
-					// n.getParents().remove(p);
 				}
-				// TODO; fix this
-
 				toPrune.add(n);
 				n.getParents().clear();
 			}

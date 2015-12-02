@@ -49,7 +49,6 @@ public class Neuron {
 	 * @param numWeights number of weights fo this neuron
 	 */
 	protected void initializeWeights(int numWeights){
-		// these need to be less than 1 anyway, right?
 		for (int i = 0; i < numWeights; i++){
 			w.add(Math.random());
 		}
@@ -85,7 +84,7 @@ public class Neuron {
 			w.set(i, w.get(i) + delta);
 		}
 		
-		// TODO: re-normalize
+		// re-normalizes
 		normalizeWeights();
 	}
 	

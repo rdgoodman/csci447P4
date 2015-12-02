@@ -107,11 +107,6 @@ public class ClusterSet {
 	}
 	
 	public void print(){
-//		for (Cluster c : clusters){
-//			for (Datum d : c.getPts()){
-//				d.print();
-//			}
-//		}
 		DecimalFormat fourDForm = new DecimalFormat("#.####");
 		
 		for (int i = 0; i < clusters.size(); i++){
@@ -123,9 +118,6 @@ public class ClusterSet {
 				System.out.print(Double.valueOf(fourDForm.format(centroid.get(j))) + " ");
 			}
 			System.out.print(">");
-//			for(Datum d : clusters.get(i).getPts()){
-//				d.print();
-//			}
 		}
 	}
 

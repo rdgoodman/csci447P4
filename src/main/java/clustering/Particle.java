@@ -56,20 +56,18 @@ public class Particle {
 	 * Randomly initializes particle position in the search space
 	 */
 	private void initialize() {
-		// TODO: what are the potential ranges for the centroids?
-		// going to assume [0, 1] for now for normalized data
 		for (int c = 0; c < numClusters; c++) {
 			ArrayList<Double> vector = new ArrayList<Double>();
 			for (int d = 0; d < numDimensions; d++) {
 				// randomly initialize each element of each centroid vector
 				double random = Math.random()/100;
 				double p = Math.random();
+				// allows some elements to be initially zero
 				if (p < 0.1){
 					vector.add(0.0);
 				} else {
 					vector.add(random);
 				}
-
 			}
 			centroids.add(new Cluster(vector, c));
 		}
@@ -101,20 +99,13 @@ public class Particle {
 		// minimization of distance
 		double min = Double.MAX_VALUE;
 		int minIndex = 0;
-		
-		// TODO: testing, remove
-	//	System.out.println();
-	//	print();
+
 
 		// iterates through all clusters in this particle
 		for (int c = 0; c < numClusters; c++) {
 			double dist = calcDistToCentroid(c, z.getData());
-			// TODO: testing, remove
-			//System.out.println("Dist to " + c + " = " + calcDistToCentroid(c, z.getData()));
-			// System.out.println(c + " dist: " + dist);
 			// finds minimum distance
 			if (dist < min) {
-				// System.out.println("changed");
 				min = dist;
 				minIndex = c;
 			}
@@ -123,7 +114,6 @@ public class Particle {
 		// places this datum in the best cluster
 		// (automatically assigns in other direction too)
 		centroids.get(minIndex).addPoint(z);
-
 		return minIndex;
 	}
 
@@ -136,14 +126,11 @@ public class Particle {
 	 *            data vector
 	 */
 	private double calcDistToCentroid(int index, ArrayList<Double> z) {
-		//System.out.println("index: " + index);
 		double sum = 0;
 		for (int i = 0; i < numDimensions; i++) {
 			sum += Math.pow(z.get(i) - centroids.get(index).getCentroid().get(i), 2);
-			//System.out.println("added " + z.get(i) + " - " + centroids.get(index).getCentroid().get(i) + " sq");
 		}
 		sum = Math.sqrt(sum);
-		//System.out.println("TOTAL DIST IS EQUAL TO " + sum);
 		return sum;
 	}
 
@@ -165,7 +152,7 @@ public class Particle {
 		double sum = 0;
 		for (Cluster c : centroids) {
 			
-			// penalize empty clusters
+			// penalize empty and very small clusters
 			if (c.getPts().size() == 0){
 				fitness = Double.MAX_VALUE;
 				return fitness;
@@ -174,7 +161,7 @@ public class Particle {
 				return fitness;
 			}
 			
-			
+			// otherwise, calculate quantization error as normal
 			for (Datum d : c.getPts()) {
 				sum += (calcDistToCentroid(c.getIndex(), d.getData()) / c.getPts().size());
 			}
@@ -244,18 +231,6 @@ public class Particle {
 			}
 			b.add(centroidCopy);
 		}
-
-		// TODO: testing, remove
-		// print();
-		// DecimalFormat twoDForm = new DecimalFormat("#.##");
-		// System.out.println("Best stored:");
-		// for (int i = 0; i < b.size(); i++){
-		// for (int j = 0; j < b.get(i).size(); j++){
-		// System.out.print(Double.valueOf(twoDForm.format(b.get(i).get(j))) + "
-		// ");
-		// }
-		// System.out.println();
-		// }
 		return b;
 	}
 
