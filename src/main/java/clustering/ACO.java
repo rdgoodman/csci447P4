@@ -40,8 +40,8 @@ public class ACO {
 				grid[i][j][1] = -1;// grid[i][j][1] is the position i, j, and the data number
 			}
 		}
-		ArrayList<ACOAgent> agents = initializeAgents();
-		ArrayList<Cluster> clusters = initializeClusters(data);
+		ArrayList<ACOAgent> agents = initializeAgents(grid);
+		ArrayList<Cluster> clusters = initializeClusters(data, grid);
 
 		for (int i = 0; i < gens; i++) {// number of generations
 			for (int j = 0; j < numAgents; j++) { // number of agents
@@ -160,7 +160,7 @@ public class ACO {
 				}
 			}
 		}
-		clusters = clusterAssignment(clusters);// will take grid at some point
+		clusters = clusterAssignment(grid, clusters);// will take grid at some point
 		return clusters;
 	}
 
@@ -195,36 +195,51 @@ public class ACO {
 		return sumF;
 	}
 
-	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data) {// TODO Random scatter in toroidal grid
-		Random rand = new Random();
-		// int indim = in.get(0).size(); //figure out dimensionality of input
-		ArrayList<Cluster> clusters = new ArrayList<Cluster>(); // initalize cluster array
-		// clusters created randomly, refined through time
-		for (int i = 0; i < k; i++) {// Create k clusters
-			int randCentroid = rand.nextInt(data.size());
-
-			Cluster cluster = new Cluster(data.get(randCentroid).getData(), i);
-			clusters.add(cluster);
+	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data, int[][][] grid) {// TODO Random scatter in toroidal grid
+		ArrayList<Cluster> clusters = new ArrayList<Cluster>(); // initialize cluster array
+		for(int i = 0; i < data.size(); i++){
+			int randRow = (int) (Math.random()*gridRowSize);
+			int randCol = (int) (Math.random()*gridColSize);
+			while(grid[randRow][randCol][1] != -1){
+				randRow = (int) (Math.random()*gridRowSize);
+				randCol = (int) (Math.random()*gridColSize);
+			}
+			grid[randRow][randCol][1] = i;
 		}
-		for (int j = 0; j < data.size(); j++) {
-			int cf = rand.nextInt(k);
-			// data.get(j).assignToCluster(clusters.get(cf));
-			clusters.get(cf).addPoint(data.get(j));
-		}
-		// System.out.println("begin clusters: " + clusters);
-		// System.out.println("Clusters created: " + clusters);
-		// clusters = trainClusters(in, clusters, 5, inDim);
-		// System.out.println("end clusters: " + clusters);
+		//clusters = clusterAssignment(grid, clusters);
 		return clusters;
 	}
 
-	private ArrayList<ACOAgent> initializeAgents() {// TODO Randomly scatter agents in toroidal grid
+	private ArrayList<ACOAgent> initializeAgents(int[][][] grid) {// TODO Randomly scatter agents in toroidal grid
 		ArrayList<ACOAgent> agents = new ArrayList<ACOAgent>();
+		for(int i = 0; i < numAgents; i++){
+			int randRow = (int) (Math.random()*gridRowSize);
+			int randCol = (int) (Math.random()*gridColSize);
+			while(grid[randRow][randCol][0] != -1){
+				randRow = (int) (Math.random()*gridRowSize);
+				randCol = (int) (Math.random()*gridColSize);
+			}
+			grid[randRow][randCol][0] = i;
+			agents.add(new ACOAgent(randRow, randCol, gridRowSize, gridColSize));
+		}
 
 		return agents;
 	}
 
-	private ArrayList<Cluster> clusterAssignment(ArrayList<Cluster> clusters) {// will take toroidal grid and assign data to clusters
+	private ArrayList<Cluster> clusterAssignment(int[][][] grid, ArrayList<Cluster> clusters) {// will take toroidal grid and assign data to clusters
+		ArrayList<Datum> newData = new ArrayList<Datum>();
+		for(int i = 0; i < gridRowSize; i++){
+			for(int j = 0; j < gridColSize; j++){
+				if(grid[i][j][1] != -1){
+					ArrayList<Double> in = new ArrayList<Double>();
+					in.add((double)i);
+					in.add((double)j);
+					newData.add(grid[i][j][1], new Datum(in));
+				}
+			}
+		}
+		KMeans kmeans = new KMeans(k, gens);
+		clusters = kmeans.run(newData);
 		return clusters;
 	}
 }
