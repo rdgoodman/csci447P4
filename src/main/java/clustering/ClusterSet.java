@@ -85,6 +85,20 @@ public class ClusterSet {
 	public ArrayList<Cluster> getClusters() {
 		return clusters;
 	}
+	
+	/**
+	 * Returns number of NON-EMPTY clusters in dataset
+	 * @return
+	 */
+	public int getNumClusters(){
+		int c = 0;
+		for (Cluster cl : clusters){
+			if (!cl.getPts().isEmpty()){
+				c++;
+			}
+		}
+		return c;
+	}
 
 	public void setClusters(ArrayList<Cluster> clusters) {
 		this.clusters = clusters;
