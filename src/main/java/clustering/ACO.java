@@ -15,7 +15,10 @@ public class ACO {
 	double kMinus;
 	double kPMax;
 	double kMMax;
-	public ACO(int k, int gens, int agents, int gridColSize, int gridRowSize, int neighborhoodSize, double kPlus, double kMinus){
+	int[][][] grid;
+	Distance d = new Distance();
+	double alpha;
+	public ACO(int k, int gens, int agents, int gridColSize, int gridRowSize, int neighborhoodSize, double kPlus, double kMinus, double alpha){
 		this.k = k;
 		this.gens = gens;
 		this.numAgents = agents;
@@ -24,12 +27,13 @@ public class ACO {
 		this.neighborhoodSize = neighborhoodSize;
 		this.kPlus = kPlus;
 		this.kMinus = kMinus;
+		this.alpha = alpha;
 		kPMax = Math.pow((kPlus / (kPlus + 1)), 2);//TODO find fitness maximum
 		kMMax = Math.pow((kMinus / (kMinus + 1)), 2);
 	}
 	
 	public ArrayList<Cluster> run(ArrayList<Datum> data){
-		int[][][] grid  = new int[gridRowSize][gridColSize][2];
+		grid  = new int[gridRowSize][gridColSize][2];
 		for(int i = 0; i < gridRowSize; i++){
 			for(int j = 0; j < gridColSize; j++){
 				grid[i][j][0] = -1;//grid[i][j][0] is the position i, j, and the agent number
@@ -58,7 +62,11 @@ public class ACO {
 					//i = item carried by agent j
 					boolean d = false;
 					//drop i if probability says so
-					double pDrop = Math.pow((kPlus/(kPlus + evaluateFitness(agents.get(j).getCarried()))), 2);
+					double pDrop = 1;
+					double fi = evaluateFitness(data, agents.get(j).getCarried(), agents.get(j).getRow(), agents.get(j).getColumn());
+					if(fi <= kMinus){
+						pDrop = 2*fi;
+					}
 					if((Math.random()*kPMax + 1) <= pDrop){
 						d = true;
 					}
@@ -73,8 +81,8 @@ public class ACO {
 					//i = object at position
 					boolean p = false;
 					//pick up i if probability says so
-					double pPick = Math.pow((kMinus/(kMinus + evaluateFitness(agents.get(j).getCarried()))), 2);
-					if((Math.random()*kMMax + 1) <= pPick){
+					double pPick = Math.pow((kPlus/(kPlus + evaluateFitness(data, agents.get(j).getCarried(), agents.get(j).getRow(), agents.get(j).getColumn()))), 2);
+					if((Math.random()*kPMax + 1) <= pPick){
 						p = true;
 					}
 					
@@ -89,16 +97,31 @@ public class ACO {
 		return clusters;
 	}
 	private void drop(ACOAgent a){
-		//TODO change grid
+		grid[a.getRow()][a.getColumn()][1] = a.getDataIndex();
 		a.drop();
 	}
 	private void pickUp(ACOAgent a){
-		//TODO change grid
+		int dataindex = grid[a.getRow()][a.getColumn()][1];
+		grid[a.getRow()][a.getColumn()][1] = -1;
 		a.pickUp();
 	}
-	private double evaluateFitness(Datum d){
+	private double evaluateFitness(ArrayList<Datum> data, Datum dat, int row, int col){
+		double sumF = 0.0;
+		for(int i = 0-neighborhoodSize; i <= neighborhoodSize; i++){
+			for(int j = 0-neighborhoodSize; j <= neighborhoodSize; j++){
+				int posRow = Math.floorMod((row+i), gridRowSize);
+				int posCol = Math.floorMod((col+j), gridRowSize);
+				if(grid[posRow][posCol][1] != -1 && i != 0 && j != 0){
+					double tempF = d.calculateDistance(dat.getData(), data.get(grid[posRow][posCol][1]).getData(), dat.getData().size());
+					tempF = tempF / alpha;
+					tempF = 1 - tempF;
+					sumF += tempF;
+				}
+			}
+		}
 		
-		return 0.0;
+		sumF = sumF / Math.pow(neighborhoodSize, 2);
+		return sumF;
 	}
 	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data){//TODO Random scatter in toroidal grid
 		Random rand = new Random();
