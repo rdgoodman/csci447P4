@@ -21,6 +21,7 @@ public class PSOTuningExperiment {
 				for (double phi2 = 0.2; phi2 <= 0.8; phi2 += 0.3) {
 					// PSO pso = new PSO(0.2, 0.2, 0.2, 10, 5, dataSize,
 					// 0.5, .15);
+					System.out.println(omega+phi1+phi2);
 					PSO pso = new PSO(omega, phi1, phi2, 10, 5, dataSize, .5, .1);
 					ClusterSet soln = new ClusterSet(pso.run(data));
 					double ratio = soln.calcSeparation() / soln.calcCohesion();
@@ -51,7 +52,7 @@ public class PSOTuningExperiment {
 
 					try {
 						writer1 = new FileWriter(filePathOut1, true);
-						writer1.write("exp ");
+						writer1.write(String.valueOf(ratio) + "\n");
 						writer1.close();
 
 					} catch (IOException e) {
@@ -60,7 +61,7 @@ public class PSOTuningExperiment {
 					}
 					try {
 						writer2 = new FileWriter(filePathOut2, true);
-						writer2.write("exp ");
+						writer2.write(String.valueOf(ratio) + "\n");
 						writer2.close();
 
 					} catch (IOException e) {
@@ -69,7 +70,7 @@ public class PSOTuningExperiment {
 					}
 					try {
 						writer3 = new FileWriter(filePathOut3, true);
-						writer3.write("exp ");
+						writer3.write(String.valueOf(ratio) + "\n");
 						writer3.close();
 
 					} catch (IOException e) {
