@@ -17,16 +17,14 @@ public class ACOAgent {
 		this.gridRowSize = gridRowSize;
 	}
 
-	public void moveAgent() {
-
-	}
-
-	public void pickUp() {
-
+	public void pickUp(int index, Datum tobeCarried) {
+		carried = tobeCarried;
+		dataIndex = index;
 	}
 
 	public void drop() {
-
+		dataIndex = -1;
+		carried = null;
 	}
 
 	public int getRow() {
