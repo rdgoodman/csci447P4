@@ -12,7 +12,6 @@ public class PSO {
 	private double kappa;
 	private ArrayList<Datum> data;
 	private ArrayList<ArrayList<Double>> gbest_store;
-	private int numDimensions;
 	private double percent;
 
 	/**
@@ -35,6 +34,7 @@ public class PSO {
 	 * 			  minimum acceptable % of data per cluster
 	 */
 	public PSO(double omega, double phi1, double phi2, int swarmSize, int numClusters, int numDimensions, double kappa, double percent) {
+		// According to tuning, best omega = .5, phi1 = .3, phi2 = .7, size = 15, percent = .1
 		this.omega = omega;
 		this.phi1 = phi1;
 		this.phi2 = phi2;
@@ -42,7 +42,6 @@ public class PSO {
 		this.percent = percent;
 		
 		swarm = new ArrayList<Particle>();
-		this.numDimensions = numDimensions;
 		initSwarm(swarmSize, numClusters, numDimensions);
 	}
 
@@ -71,7 +70,7 @@ public class PSO {
 
 		int iterations = 0;
 		
-		while (iterations < 10000) {	
+		while (iterations < 1000) {	
 			// TODO: testing, remove
 			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
 			int pcount = 0;
