@@ -15,7 +15,7 @@ public class kMeansTuningExperiment {
 		int k = 2;
 		int numGens = 10;
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			KMeans kmeans = new KMeans(k, numGens);
 			ClusterSet soln = new ClusterSet(kmeans.run(data));
 			double ratio = soln.calcSeparation() / soln.calcCohesion();
@@ -34,20 +34,20 @@ public class kMeansTuningExperiment {
 			}
 
 			if (k == 2) {
-				k = 3;
-			} else if (k == 3) {
-				k = 4;
-			} else if (k == 4) {
-				k = 6;
-			} else if (k == 6) {
+				k = 5;
+			} else if (k == 5) {
 				k = 8;
+			} else if (k == 8) {
+				k = 15;
+			} else if (k == 15) {
+				k = 20;
 			}
 		} //end for
 		
 		k = 2;
 		numGens = 100;
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			KMeans kmeans = new KMeans(k, numGens);
 			ClusterSet soln = new ClusterSet(kmeans.run(data));
 			double ratio = soln.calcSeparation() / soln.calcCohesion();
@@ -66,20 +66,20 @@ public class kMeansTuningExperiment {
 			}
 
 			if (k == 2) {
-				k = 3;
-			} else if (k == 3) {
-				k = 4;
-			} else if (k == 4) {
-				k = 6;
-			} else if (k == 6) {
+				k = 5;
+			} else if (k == 5) {
 				k = 8;
+			} else if (k == 8) {
+				k = 15;
+			} else if (k == 15) {
+				k = 20;
 			}
 		} //end for
 		
 		k = 2;
 		numGens = 1000;
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			KMeans kmeans = new KMeans(k, numGens);
 			ClusterSet soln = new ClusterSet(kmeans.run(data));
 			double ratio = soln.calcSeparation() / soln.calcCohesion();
@@ -98,26 +98,26 @@ public class kMeansTuningExperiment {
 			}
 
 			if (k == 2) {
-				k = 3;
-			} else if (k == 3) {
-				k = 4;
-			} else if (k == 4) {
-				k = 6;
-			} else if (k == 6) {
+				k = 5;
+			} else if (k == 5) {
 				k = 8;
+			} else if (k == 8) {
+				k = 15;
+			} else if (k == 15) {
+				k = 20;
 			}
 		} //end for
 	
 		k = 2;
-		numGens = 10000;
+		numGens = 2000;
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			KMeans kmeans = new KMeans(k, numGens);
 			ClusterSet soln = new ClusterSet(kmeans.run(data));
 			double ratio = soln.calcSeparation() / soln.calcCohesion();
 			String printRatio = String.valueOf(ratio);
 			
-			filePathOut1 = "src/main/resources/10000gens.txt";
+			filePathOut1 = "src/main/resources/2000gens.txt";
 
 			try {
 				writer1 = new FileWriter(filePathOut1, true);
@@ -130,13 +130,13 @@ public class kMeansTuningExperiment {
 			}
 
 			if (k == 2) {
-				k = 3;
-			} else if (k == 3) {
-				k = 4;
-			} else if (k == 4) {
-				k = 6;
-			} else if (k == 6) {
+				k = 5;
+			} else if (k == 5) {
 				k = 8;
+			} else if (k == 8) {
+				k = 15;
+			} else if (k == 15) {
+				k = 20;
 			}
 		} //end for
 	}
