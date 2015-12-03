@@ -7,53 +7,103 @@ import java.util.Random;
 public class ACO {
 	int k;
 	int gens;
-	int agents;
+	int numAgents;
 	int gridColSize;
 	int gridRowSize;
-	public ACO(int k, int gens, int agents, int gridColSize, int gridRowSize){
+	int neighborhoodSize;
+	double kPlus;
+	double kMinus;
+	double kPMax;
+	double kMMax;
+	public ACO(int k, int gens, int agents, int gridColSize, int gridRowSize, int neighborhoodSize, double kPlus, double kMinus){
 		this.k = k;
 		this.gens = gens;
-		this.agents = agents;
+		this.numAgents = agents;
 		this.gridColSize = gridColSize;
 		this.gridRowSize = gridRowSize;
+		this.neighborhoodSize = neighborhoodSize;
+		this.kPlus = kPlus;
+		this.kMinus = kMinus;
+		kPMax = Math.pow((kPlus / (kPlus + 1)), 2);//TODO find fitness maximum
+		kMMax = Math.pow((kMinus / (kMinus + 1)), 2);
 	}
 	
 	public ArrayList<Cluster> run(ArrayList<Datum> data){
-		int[][] grid  = new int[gridRowSize][gridColSize];
+		int[][][] grid  = new int[gridRowSize][gridColSize][2];
 		for(int i = 0; i < gridRowSize; i++){
 			for(int j = 0; j < gridColSize; j++){
-				grid[i][j] = 0;
+				grid[i][j][0] = -1;//grid[i][j][0] is the position i, j, and the agent number
+				grid[i][j][1] = -1;//grid[i][j][1] is the position i, j, and the data number
 			}
 		}
 		ArrayList<ACOAgent> agents = initializeAgents();
 		ArrayList<Cluster> clusters = initializeClusters(data);
 		
 		for(int i = 0; i < gens; i++){//number of generations
-			for(int j = 0; j < agents; j++){ //number of agents
+			for(int j = 0; j < numAgents; j++){ //number of agents
 				//move agent randomly
+				
 				//l = does agent j carry an item?
+				boolean l = false;
+				if(!agents.get(j).getCarried().equals(null)){
+					l = true;
+				}
 				//e = is current position occupied by item?
+				boolean e = false;
+				if(grid[agents.get(j).getRow()][agents.get(j).getColumn()][1] != -1){
+					e = true;
+				}
 				//if l == True and e == False
+				if(l && !e){
 					//i = item carried by agent j
+					boolean d = false;
 					//drop i if probability says so
+					double pDrop = Math.pow((kPlus/(kPlus + evaluateFitness(agents.get(j).getCarried()))), 2);
+					if((Math.random()*kPMax + 1) <= pDrop){
+						d = true;
+					}
+					
 					//if drop
-						//object at position = i
-						//i = null
+					if(d){
+						drop(agents.get(j));
+					}
+				}
+				if(!l && e){
 				//if l == False and e == True
 					//i = object at position
+					boolean p = false;
 					//pick up i if probability says so
+					double pPick = Math.pow((kMinus/(kMinus + evaluateFitness(agents.get(j).getCarried()))), 2);
+					if((Math.random()*kMMax + 1) <= pPick){
+						p = true;
+					}
+					
 					//if pick up
-						//i = object at position
-						//object at position = null
+					if(p){//pickup the object
+						pickUp(agents.get(j));
+					}
+				}
 			}
 		}
 		clusters = clusterAssignment(clusters);//will take grid at some point
 		return clusters;
 	}
+	private void drop(ACOAgent a){
+		//TODO change grid
+		a.drop();
+	}
+	private void pickUp(ACOAgent a){
+		//TODO change grid
+		a.pickUp();
+	}
+	private double evaluateFitness(Datum d){
+		
+		return 0.0;
+	}
 	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data){//TODO Random scatter in toroidal grid
 		Random rand = new Random();
         //int indim = in.get(0).size(); //figure out dimensionality of input
-        ArrayList<Cluster> clusters = new ArrayList(); //initalize cluster array
+        ArrayList<Cluster> clusters = new ArrayList<Cluster>(); //initalize cluster array
         //clusters created randomly, refined through time
         for (int i = 0; i < k; i++) {//Create k clusters
         	int randCentroid = rand.nextInt(data.size());

@@ -27,7 +27,7 @@ public class KMeans {
 //
                 double curD = Integer.MAX_VALUE;
                 int smallestCluster = 0;
-                ArrayList<Datum> tempDat = new ArrayList<Datum>();
+                //ArrayList<Datum> tempDat = new ArrayList<Datum>();
                 for (int c = 0; c < clusters.size(); c++) {//for each cluster
                     //System.out.println("iteration: "+ i + ", datapoint: " + j + ", cluster: " + c);
 
@@ -102,7 +102,7 @@ public class KMeans {
 	private ArrayList<Cluster> initializeClusters(ArrayList<Datum> data){
 		Random rand = new Random();
         //int indim = in.get(0).size(); //figure out dimensionality of input
-        ArrayList<Cluster> clusters = new ArrayList(); //initalize cluster array
+        ArrayList<Cluster> clusters = new ArrayList<Cluster>(); //initalize cluster array
         //clusters created randomly, refined through time
         for (int i = 0; i < k; i++) {//Create k clusters
         	int randCentroid = rand.nextInt(data.size());
@@ -148,7 +148,7 @@ public class KMeans {
 
             while ((line = br.readLine()) != null) {
                 ArrayList<Double> inputs = new ArrayList<Double>();
-                ArrayList<Double> output = new ArrayList<Double>();
+                //ArrayList<Double> output = new ArrayList<Double>();
                 String[] example = line.split(cvsSplitBy);
 
                 // adds inputs (all but last number on line)
