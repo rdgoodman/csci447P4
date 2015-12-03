@@ -83,7 +83,7 @@ public class CompetitiveANN {
 		// first train
 		System.out.println(">>>>> TRAINING");
 		// go through training set multiple times
-		for (int iteration = 0; iteration < 15; iteration++) {
+		for (int iteration = 0; iteration < 30; iteration++) {
 			Collections.shuffle(train);
 			for (Datum d : train) {
 				// set inputs

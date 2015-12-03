@@ -46,7 +46,7 @@ public class ANNTuningExperiment {
 			test.clear();
 			for (Datum d : data) {
 				double p = Math.random();
-				if (p < .3) {
+				if (p < .20) {
 					test.add(d);
 				} else {
 					train.add(d);
