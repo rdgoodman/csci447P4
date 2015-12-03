@@ -50,16 +50,16 @@ public class RunModels {
 			// ClusterSet soln = new ClusterSet(dbscan.run(data));
 
 			// // try competitiveANN
-			ArrayList<Datum> train = new ArrayList<Datum>();
-			ArrayList<Datum> test = new ArrayList<Datum>();
-			for (Datum d : data) {
-				double p = Math.random();
-				if (p < .3) {
-					test.add(d);
-				} else {
-					train.add(d);
-				}
-			}
+//			ArrayList<Datum> train = new ArrayList<Datum>();
+//			ArrayList<Datum> test = new ArrayList<Datum>();
+//			for (Datum d : data) {
+//				double p = Math.random();
+//				if (p < .3) {
+//					test.add(d);
+//				} else {
+//					train.add(d);
+//				}
+//			}
 			// CompetitiveANN net = new CompetitiveANN(0.2, 11, 10);
 			// ClusterSet soln = new ClusterSet(net.run(train, test));
 			//
@@ -72,7 +72,7 @@ public class RunModels {
 
 			// PSOTuningExperiment multiplierExperiment = new
 			// PSOTuningExperiment(dataSize, data);
-			ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, train, test);
+			//ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
