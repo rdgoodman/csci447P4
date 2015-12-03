@@ -3,8 +3,9 @@ package clustering;
 import java.util.ArrayList;
 import java.util.Random;
 
-//TO DO: Change centroid to all -1s to show it does not apply here? If no, add note.
-//CHANGE COMMENTS
+//Note: In DBScan there is no centroid, but the algorithm still requires a centroid value.
+//Therefore, we feed in the data as a dummy centroid, but since it is not used in any of our 
+//result calcuations, this does not impact our results.
 
 /*
  * This formulation of the DBScan algorithm largely relies on the 
@@ -28,7 +29,7 @@ public class DBScan {
 		this.numDimensions = numDimensions;
 	}
 
-	public ArrayList<Cluster> run(ArrayList<Datum> training) {
+	public ArrayList<Cluster> run(ArrayList<Datum> data) {
 		// The clusters returned at the end of the algorithm
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 
@@ -47,7 +48,6 @@ public class DBScan {
 		// set
 		ArrayList<Datum> visited = new ArrayList<Datum>();
 
-		// first train data
 		System.out.println(">>>>>>>>>>>>DBSCAN");
 		// Build the set of all core points, then perform DB scan using the core
 		// set
@@ -55,20 +55,20 @@ public class DBScan {
 		Random rand = new Random();
 
 		// generates a random number within the size of the dataset
-		int randomPt = rand.nextInt((training.size() - 1) + 1);
+		int randomPt = rand.nextInt((data.size() - 1) + 1);
 		// gets a random point from the data set to serve as the first core
 		// candidate
-		Datum currPt = training.get(randomPt);
+		Datum currPt = data.get(randomPt);
 
 		int iterator = 0;
 		// while there are unvisited points in the dataset
-		while (visited.size() < training.size() - 1) {
+		while (visited.size() < data.size() - 1) {
 			// add this point to the list of visited points
 			if (!visited.contains(currPt)) {
 				visited.add(currPt);
 			}
 
-			for (Datum d : training) {
+			for (Datum d : data) {
 				// if the distance between currPt and d is within epsilon, add
 				// to border set
 				if (d.calcDist(currPt) <= epsilon) {
@@ -82,18 +82,19 @@ public class DBScan {
 			} // end if, we have added data point to core if appropriate
 
 			// pick a new point in dataset to serve as core
-			currPt = training.get(iterator);
+			currPt = data.get(iterator);
 			iterator++;
 			// clear the border set, because we are looking at a new core
 			border.clear();
 		} // end while, now all points are categorized
 
-		// the label associated with the first cluster
-
-		int currClustLbl = 0;
-
+		
 		// **********************************************************
 		// Now begin the DB scan portion of the algorithm
+		
+		// the label associated with the first cluster
+		int currClustLbl = 0;
+
 		// for each point in the core set
 		for (int p = 0; p < core.size() - 1; p++) {
 			// check if p is already assigned to a cluster
@@ -106,45 +107,40 @@ public class DBScan {
 				clusters.get(currClustLbl).addPoint(core.get(p));
 
 				// for each point in the training set
-				for (int q = 0; q < training.size() - 1; q++) {
+				for (int q = 0; q < data.size() - 1; q++) {
 
 					// if this point is already in a cluster, do not add again
-					if (clusters.contains(training.get(q))) {
+					if (clusters.contains(data.get(q))) {
 						// do nothing, this is already assigned to a cluster
 					} else {
 						if (!core.isEmpty()) {
-							System.out.println(core.get(p).calcDist(training.get(q)));
-								if (core.get(p).calcDist(training.get(q)) <= epsilon) {
+								if (core.get(p).calcDist(data.get(q)) <= epsilon) {
 									// getting here means point is in the
 									// neighborhood of p
 									// so add it to the cluster
-									clusters.get(currClustLbl).addPoint(training.get(q));
+									clusters.get(currClustLbl).addPoint(data.get(q));
 									// checks if this point is in the core set,
-									// if
-									// so -
-									// erases it so they do not
+									// if so, erases it so they do not
 									// get double counted
 
-									if (core.contains(training.get(q))) {
+									if (core.contains(data.get(q))) {
 										if (core.size() >= 1) {
-											if (!core.get(p).equals(training.get(q))){
-												core.remove(training.get(q));												
-											}
-										}
-									} // end if - for checking if q is in core
-								}
+											if (!core.get(p).equals(data.get(q))){
+												core.remove(data.get(q));												
+											} 
+										} //check that we can remove from the core set
+									}  // end if for checking if q is in core
+								} //end if for calculating data
 							} // end else if for neighborhood checking
-						}
-					} // end for - training set checking
-				} // end else for cluster checking
+						} // end else for cluster checking data
+					} // end for - data set checking
+				} //end outer else for cluster checking core
 
-			// all valid points in the cluster for p, increment for cluster p +
-			// 1
+			// all valid points in the cluster for p, increment for 
+			// cluster p +1
 			currClustLbl++;
-			System.out.println("p " + p);
-		} // end for
+		} // end for core set checking
 		System.out.println("End DBScan");
 		return clusters;
 	}
-
 }
