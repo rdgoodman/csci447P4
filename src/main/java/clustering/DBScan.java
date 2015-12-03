@@ -143,7 +143,7 @@ public class DBScan {
 			currClustLbl++;
 			System.out.println("p " + p);
 		} // end for
-
+		System.out.println("End DBScan");
 		return clusters;
 	}
 
