@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class RunModels {
 
 	public static void main(String[] args) {
-		File file = new File("src/main/resources/abalone.data.csv");
+		File file = new File("src/main/resources/movement_libras.data.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -70,7 +70,7 @@ public class RunModels {
 			// soln.calcCohesion();
 			// soln.calcSeparation();
 		
-			PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data);
+			//PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -34,6 +34,7 @@ public class PSO {
 	 * 			  minimum acceptable % of data per cluster
 	 */
 	public PSO(double omega, double phi1, double phi2, int swarmSize, int numClusters, int numDimensions, double kappa, double percent) {
+		// According to tuning, best omega = .5, phi1 = .3, phi2 = .7, size = 15, percent = .1
 		this.omega = omega;
 		this.phi1 = phi1;
 		this.phi2 = phi2;
