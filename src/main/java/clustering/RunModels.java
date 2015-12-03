@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class RunModels {
 
 	public static void main(String[] args) {
-		File file = new File("src/main/resources/sat.tst.csv");
+		File file = new File("src/main/resources/bupa.data.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -72,7 +72,7 @@ public class RunModels {
 
 			// PSOTuningExperiment multiplierExperiment = new
 			// PSOTuningExperiment(dataSize, data);
-			//ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data);
+			ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data, 5, "bupa");
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
