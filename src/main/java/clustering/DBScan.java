@@ -3,6 +3,8 @@ package clustering;
 import java.util.ArrayList;
 import java.util.Random;
 
+//TO DO: Change centroid to all -1s to show it does not apply here
+
 /*
  * This formulation of the DBScan algorithm largely relies on the 
  * formulation provided by Ester et. al in largely relies on formulation 
@@ -38,15 +40,15 @@ public class DBScan {
 		ArrayList<Datum> border = new ArrayList<Datum>();
 
 		// A noise point does not belong to either of the above sets
-		ArrayList<Datum> noise = new ArrayList<Datum>();
+//		ArrayList<Datum> noise = new ArrayList<Datum>();
 
 		// Holds all visited points in the dataset, for constructing the core
 		// set
 		ArrayList<Datum> visited = new ArrayList<Datum>();
 
 		// first train data
-		System.out.println(">>>>> TRAINING");
-
+		System.out.println(">>>>> TRAINING - CHECK IF THIS REQUIRES TRAINING!");
+		System.out.println(">>>>>>>>>>>>DBSCAN");
 		// Build the set of all core points, then perform DB scan using the core
 		// set
 		// Select a data point at random to test as a core point
@@ -54,13 +56,11 @@ public class DBScan {
 
 		// generates a random number within the size of the dataset
 		int randomPt = rand.nextInt((training.size() - 1) + 1) + 1;
-
+		//gets a random point from the data set to serve as the first core candidate
 		Datum currPt = training.get(randomPt);
 
 		int iterator = 0;
-
-		// System.out.println("Curr pt starts as " + currPt.getData());
-
+		//while there are unvisited points in the dataset
 		while (visited.size() < training.size() - 1) {
 			// add this point to the list of visited points
 			if (!visited.contains(currPt)) {
@@ -87,95 +87,43 @@ public class DBScan {
 			border.clear();
 		} // end while, now all points are categorized
 
-		// for (Datum d: core) {
-		// System.out.println(d);
-		// }
-
 		// the label associated with the first cluster
 		int currClustLbl = 0;
-		visited.clear();
-
-		while (visited.size() < core.size() - 1) {
-
-			// if the data does not have a cluster label yet, give it one
-			for (Datum p : core) {
-				if (clusters.contains(p)) {
-					// do nothing, move along pal
-				} else {
-					// add to the cluster, add to the list of visited items
-					clusters.add(new Cluster(p.getData(), currClustLbl));
-					clusters.get(currClustLbl).addPoint(p);
-					visited.add(p);
-
-					for (Datum q : training) {
-						if (clusters.contains(q)) {
-							// again, is already in cluster, don't double add
-						} else if (p.calcDist(q) <= epsilon) {
-							visited.add(q);
-							clusters.get(currClustLbl).addPoint(q);	
-							
-						
-//							
-//							if (core.contains(q)) {
-//								//remove it
-//								core.remove(q);
-//							} 
-							
-						} // end if
-					} // end for
-
-				}
-
-				// increment the cluster label
-				currClustLbl++;
-			}
-
-			// for (Datum q: training) {
-			// clusters.get(currClustLbl).addPoint(q);
-			// }
-			//
-			//
-			// for (Cluster c: clusters) {
-			// System.out.println(c);
-			// }
-
-		}
-		// if (visited.contains(p)) {
-		// // add to cluster
-		// // WARNING, not a real centroid - is there a better way to
-		// // do this?
-		// clusters.add(new Cluster(p.getData(), currClustLbl));
-		// clusters.get(currClustLbl).addPoint(p);
-		// System.out.println("Label " + currClustLbl);
-		// visited.add(p);
-		//
-		// // check all points in dataset, if within epsilon of p, add
-		// // to cluster
-		// for (Datum p2 : training) {
-		// System.out.println(currClustLbl);
-		// if (p.calcDist(p2) <= epsilon) {
-		// System.out.println("Label in calc distance" + currClustLbl);
-		// //clusters.get(currClustLbl).addPoint(p2);
-		// //p2.assignToCluster(clusters.get(currClustLbl));
-		// //System.out.println(clusters.get(currClustLbl));
-		// }
-		//
-		// }
-
-		// when all points for that p added to cluster, look at the
-		// next p
-
-		// }
-
-		// System.out.println("Cluster index " + p.getClusterIndex());
-		// increment
-
-		// currClustLbl++;
-
-		// }
-
-		// }
-
+		
+		// Now begin the DB scan portion of the algorithm
+		// for each point in the core set
+		for (int p = 0; p < core.size() - 1; p++) {
+			//check if p is already assigned to a cluster
+			if (clusters.contains(core.get(p))) {
+				//do nothing, this is already assigned to a cluster
+			} else {
+				// make a new cluster
+				clusters.add(new Cluster(core.get(p).getData(), currClustLbl));
+				// add the point p to this cluster
+				clusters.get(currClustLbl).addPoint(core.get(p));
+			
+				// for each point in the training set
+				for (int q = 0; q < training.size() - 1; q++) {
+					// if this point is already in a cluster, do not add again
+					if (clusters.contains(training.get(q))) {
+						//do nothing, this is already assigned to a cluster
+					} else if (core.get(p).calcDist(training.get(q)) <= epsilon) {
+						//getting here means point is in the neighborhood of p
+						//so add it to the cluster
+						clusters.get(currClustLbl).addPoint(training.get(q));
+						//checks if this point is in the core set, if so - erases it so they do not 
+						//get double counted
+						if (core.contains(training.get(q))) {
+							core.remove(training.get(q));
+						} //end if for core checking
+					} //end else if for neighborhood checking
+				} //end inner for for dataset checking
+			} //end else for cluster checking
+			
+			//all valid points in the cluster for p, increment for cluster p + 1
+			currClustLbl++;
+		} //end for
+		
 		return clusters;
 	}
 
