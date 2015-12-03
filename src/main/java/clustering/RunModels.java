@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class RunModels {
 
 	public static void main(String[] args) {
-		File file = new File("src/main/resources/movement_libras.data.csv");
+		File file = new File("src/main/resources/sat.tst.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -50,16 +50,16 @@ public class RunModels {
 			// ClusterSet soln = new ClusterSet(dbscan.run(data));
 
 			// // try competitiveANN
-			// ArrayList<Datum> train = new ArrayList<Datum>();
-			// ArrayList<Datum> test = new ArrayList<Datum>();
-			// for (Datum d : data){
-			// double p = Math.random();
-			// if (p < .3){
-			// test.add(d);
-			// } else {
-			// train.add(d);
-			// }
-			// }
+			ArrayList<Datum> train = new ArrayList<Datum>();
+			ArrayList<Datum> test = new ArrayList<Datum>();
+			for (Datum d : data) {
+				double p = Math.random();
+				if (p < .3) {
+					test.add(d);
+				} else {
+					train.add(d);
+				}
+			}
 			// CompetitiveANN net = new CompetitiveANN(0.2, 11, 10);
 			// ClusterSet soln = new ClusterSet(net.run(train, test));
 			//
@@ -69,8 +69,10 @@ public class RunModels {
 			// System.out.println();
 			// soln.calcCohesion();
 			// soln.calcSeparation();
-		
-			//PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data);
+
+			// PSOTuningExperiment multiplierExperiment = new
+			// PSOTuningExperiment(dataSize, data);
+			ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, train, test);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
