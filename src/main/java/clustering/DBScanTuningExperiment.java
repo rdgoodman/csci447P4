@@ -3,7 +3,12 @@ package clustering;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+//Experiments to test a variety of tunable parameters for DBScan. 
+/*
+ * Goal is to vary the epsilon parameter (which corresponds to the max distance 
+ * from core to the other point in order to qualify as being in the 
+ * neighborhood).
+ */
 public class DBScanTuningExperiment {
 
 	public DBScanTuningExperiment(int dataSize, ArrayList<Datum> data) {
