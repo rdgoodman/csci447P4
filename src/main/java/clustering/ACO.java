@@ -8,14 +8,26 @@ public class ACO {
 	int k;
 	int gens;
 	int agents;
-	public ACO(int k, int gens, int agents){
+	int gridColSize;
+	int gridRowSize;
+	public ACO(int k, int gens, int agents, int gridColSize, int gridRowSize){
 		this.k = k;
 		this.gens = gens;
 		this.agents = agents;
+		this.gridColSize = gridColSize;
+		this.gridRowSize = gridRowSize;
 	}
 	
 	public ArrayList<Cluster> run(ArrayList<Datum> data){
+		int[][] grid  = new int[gridRowSize][gridColSize];
+		for(int i = 0; i < gridRowSize; i++){
+			for(int j = 0; j < gridColSize; j++){
+				grid[i][j] = 0;
+			}
+		}
+		ArrayList<ACOAgent> agents = initializeAgents();
 		ArrayList<Cluster> clusters = initializeClusters(data);
+		
 		for(int i = 0; i < gens; i++){//number of generations
 			for(int j = 0; j < agents; j++){ //number of agents
 				//move agent randomly
@@ -61,8 +73,10 @@ public class ACO {
         return clusters;
 	}
 	
-	private void initializeAgents(){//TODO Randomly scatter agents in toroidal grid
+	private ArrayList<ACOAgent> initializeAgents(){//TODO Randomly scatter agents in toroidal grid
+		ArrayList<ACOAgent> agents = new ArrayList<ACOAgent>();
 		
+		return agents;
 	}
 	private ArrayList<Cluster> clusterAssignment(ArrayList<Cluster> clusters){//will take toroidal grid and assign data to clusters
 		return clusters;
