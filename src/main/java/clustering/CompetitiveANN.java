@@ -97,13 +97,14 @@ public class CompetitiveANN {
 		prune();
 
 		// then test
-		System.out.println(">>>>> TESTING");
+		System.out.println("\n" + ">>>>> TESTING");
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 
 		// create a cluster for each remaining compete node
 		for (int i = 0; i < nodes.get(1).size(); i++) {
 			// weights added as centroid, even though they're probabilities
-			// (harmless since centroids aren't used for calculations after this)
+			// (harmless since centroids aren't used for calculations after
+			// this)
 			clusters.add(new Cluster(nodes.get(1).get(i).getWeights(), i));
 		}
 
@@ -114,7 +115,7 @@ public class CompetitiveANN {
 			clusters.get(index).addPoint(d);
 		}
 
-		// TODO: for testing purposes only
+		// for testing purposes only
 		for (Cluster c : clusters) {
 			c.print();
 		}
@@ -189,8 +190,9 @@ public class CompetitiveANN {
 			}
 		}
 
-		// TODO: testing, remove
-		// print();
+		if (training) {
+			print();
+		}
 
 		if (training) {
 			// update winner's weights
@@ -217,9 +219,13 @@ public class CompetitiveANN {
 				n.getParents().clear();
 			}
 		}
+		
+		System.out.println("\n" + ">>>>> PRUNING");
+		
 		// remove node from network entirely
 		for (Neuron n : toPrune) {
 			nodes.get(1).remove(n);
+			System.out.println("Removing an unused node");
 		}
 
 	}

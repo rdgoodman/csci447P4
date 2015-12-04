@@ -137,14 +137,13 @@ public class Neuron {
 	}
 	
 	public String toString(){
-		DecimalFormat twoDForm = new DecimalFormat("#.##");
-		DecimalFormat threeDForm = new DecimalFormat("#.###");		
+		DecimalFormat fourDForm = new DecimalFormat("#.####");		
 		
 		String s = "[";
 		for (int i = 0; i < w.size(); i++){
-			s += (Double.valueOf(twoDForm.format(w.get(i))) + " ");
+			s += (Double.valueOf(fourDForm.format(w.get(i))) + " ");
 		}
 		
-		return s += (" ~ " + Double.valueOf(threeDForm.format(output)) + "]  ");
+		return s += (" ~ " + Double.valueOf(fourDForm.format(output)) + "]  ");
 	}
 }

@@ -70,9 +70,8 @@ public class PSO {
 
 		int iterations = 0;
 		
-		while (iterations < 1000) {	
-			// TODO: testing, remove
-			//System.out.println(">>>>>>>>>> ITERATION " + count + " <<<<<<<<");
+		while (iterations < 100) {	
+			System.out.println(">>> Iteration " + iterations );
 			int pcount = 0;
 			for (Particle p : swarm) {
 				// Step 1: evaluate fitness
@@ -89,8 +88,7 @@ public class PSO {
 					gbest_store = p.copyBest();
 					minGlobalFitness = fit;
 					
-					// TODO: testing, remove
-					//System.out.println("%%%%%%% NEW GLOBAL BEST %%%%%%%");
+					System.out.println("%%%%%%% NEW GLOBAL BEST %%%%%%%");
 					evaluateGBest();
 				}
 				
@@ -126,9 +124,7 @@ public class PSO {
 			p.findBestCluster(z);
 		}
 		double fit = p.calcFitness(data, percent);
-		// TODO: testing, remove
-//		System.out.println("%%%--- FITNESS CALCULATION ---%%%");
-//		System.out.println("Best fitness: " + fit);
+		System.out.println("Best fitness: " + fit);
 
 		return p;
 	}

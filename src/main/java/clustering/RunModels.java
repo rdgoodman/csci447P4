@@ -12,7 +12,11 @@ public class RunModels {
 
 	public static void main(String[] args) {
 
-		File file = new File("src/main/resources/pima-indians-diabetes.data.csv");
+		Scanner input = new Scanner(System.in);
+		System.out.println("Please enter P if you wish to run PSO, or C if you wish to run Competitive Learning");
+		String algo = input.nextLine();
+
+		File file = new File("src/main/resources/iris.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -41,65 +45,58 @@ public class RunModels {
 			}
 			System.out.println("Data: " + data.size());
 
-			// try pso
-			// PSO pso = new PSO(0.2, 0.2, 0.2, 10, 5, dataSize, 0.5, .15);
-			// ClusterSet soln = new ClusterSet(pso.run(data));
-
-			// try DBScan
-			// DBScan dbscan = new DBScan(.001, 6, dataSize);
-			// ClusterSet soln = new ClusterSet(dbscan.run(data));
-
-			//try KMeans
-//			KMeans km = new KMeans(2, 10);
-//			ClusterSet soln = new ClusterSet(km.run(data));
-			
-//			// // try competitiveANN
-//			ArrayList<Datum> train = new ArrayList<Datum>();
-//			ArrayList<Datum> test = new ArrayList<Datum>();
-//			for (Datum d : data) {
-//				double p = Math.random();
-//				if (p < .3) {
-//					test.add(d);
-//				} else {
-//					train.add(d);
-//				}
-//			}
-			// CompetitiveANN net = new CompetitiveANN(0.2, 11, 10);
-			// ClusterSet soln = new ClusterSet(net.run(train, test));
+			// 
 			//
-			// System.out.println();
-			// System.out.println();
-			// soln.print();
-			// System.out.println();
-			// soln.calcCohesion();
-			// soln.calcSeparation();
-
-			// PSOTuningExperiment multiplierExperiment = new
-			// PSOTuningExperiment(dataSize, data);
-			//ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, train, test);
-
-		
-			//PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data);
-			//DBScanTuningExperiment dbste = new DBScanTuningExperiment(dataSize, data);
-			//kMeansTuningExperiment km = new kMeansTuningExperiment(dataSize, data);
-			String dataName = "pima";
-//			DBScanExperiment dbse = new DBScanExperiment(dataSize, data, dataName);
-			int k;
-//			k = 28; //abalone
-//			k = 3; //haberman
-//			k = 7; //glass
-//			k = 2; //ionosphere
-//			k = 3; //iris
-//			k = 26; //letters
-//			k = 15; //libra
-			k = 2;  //pima 
-//			k = 8; //wine-red
-//			k = 7; //wine-white
+			// Sample runs
+			//
+			//
 			
-			KMeansExperiment km = new KMeansExperiment(k, dataSize, data, dataName);
+			if (algo.equals("P")) {
+				
+				// particle swarm optimization
+				PSO psoSample = new PSO(0.2, 0.2, 0.2, 10, 3, dataSize, 0.5, .15);
+				ClusterSet psoSoln = new ClusterSet(psoSample.run(data));
+				System.out.println();
+				System.out.println();
+				System.out.println("****************************");
+				System.out.println("*** Clustering Solution: ***");
+				System.out.println("****************************");
+				psoSoln.print();
+				System.out.println();
+				psoSoln.calcCohesion();
+				psoSoln.calcSeparation();
+				
+			} else if (algo.equals("C")) {
+				
+				// Competitive learning neural network
+				CompetitiveANN compSample = new CompetitiveANN(0.2, dataSize, 3);
+				ArrayList<Datum> train = new ArrayList<Datum>();
+				ArrayList<Datum> test = new ArrayList<Datum>();
+				for (Datum d : data) {
+					double p = Math.random();
+					if (p < .2) {
+						test.add(d);
+					} else {
+						train.add(d);
+					}
+				}
+				ClusterSet compSoln = new ClusterSet(compSample.run(train, test));
+				System.out.println();
+				System.out.println();
+				System.out.println("****************************");
+				System.out.println("*** Clustering Solution: ***");
+				System.out.println("****************************");
+				compSoln.print();
+				System.out.println();
+				compSoln.calcCohesion();
+				compSoln.calcSeparation();
+			}
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
+		input.close();
 	}
 
 	private static double[] normalizeData(double[] nums) {
