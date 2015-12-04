@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class RunModels {
 
 	public static void main(String[] args) {
-		File file = new File("src/main/resources/haberman.data.csv");
+		File file = new File("src/main/resources/winequality-red.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -70,8 +70,22 @@ public class RunModels {
 			// soln.calcCohesion();
 			// soln.calcSeparation();
 
-			PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data, 3, "hab");
-			ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data, 3, "hab");
+			//PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data, 3, "hab");
+			//ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data, 3, "hab");
+			//kMeansTuningExperiment km = new kMeansTuningExperiment(dataSize, data);
+			String dataName = "haberman";
+			int k;
+//			k = 28; //abalone
+			k = 3; //haberman
+//			k = 7; //glass
+//			k = 2; //ionosphere
+//			k = 3; //iris
+//			k = 26; //letters
+//			k = 15; //libra
+//			k = 2;  //pima 
+//			k = 8; //wine-red
+//			k = 7; //wine-white
+			KMeansExperiment km = new KMeansExperiment(k, dataSize, data, dataName);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
