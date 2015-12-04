@@ -13,7 +13,8 @@ public class RunModels {
 	public static void main(String[] args) {
 
 		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter P if you wish to run PSO, or C if you wish to run Competitive Learning");
+		System.out.println("Please enter P if you wish to run PSO, C if you wish to run Competitive Learning, A if you wish to run Ant-Based Clustering, ");
+		System.out.println("  K if you wish to run KMeans clustering, or D if you wish to run DBScan");
 		String algo = input.nextLine();
 
 		File file = new File("src/main/resources/iris.csv");
@@ -90,6 +91,32 @@ public class RunModels {
 				System.out.println();
 				compSoln.calcCohesion();
 				compSoln.calcSeparation();
+			} else if(algo.equals("A")){
+				ACO aco = new ACO(5, 1000, 100, 600, 600, 80, 0.2, 0.4, 0.3, 2);
+				ClusterSet abcSoln = new ClusterSet(aco.run(data));
+				System.out.println();
+				System.out.println();
+				System.out.println("****************************");
+				System.out.println("*** Clustering Solution: ***");
+				System.out.println("****************************");
+				abcSoln.print();
+				System.out.println();
+				abcSoln.calcCohesion();
+				abcSoln.calcSeparation();
+			}else if(algo.equals("K")){
+				KMeans kmeans = new KMeans(5, 2000);
+				ClusterSet kSoln = new ClusterSet(kmeans.run(data));
+				System.out.println();
+				System.out.println();
+				System.out.println("****************************");
+				System.out.println("*** Clustering Solution: ***");
+				System.out.println("****************************");
+				kSoln.print();
+				System.out.println();
+				kSoln.calcCohesion();
+				kSoln.calcSeparation();
+			}else if(algo.equals("D")){
+				
 			}
 
 		} catch (FileNotFoundException e) {
