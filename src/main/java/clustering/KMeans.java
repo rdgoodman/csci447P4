@@ -19,7 +19,7 @@ public class KMeans {
 	}
 	
 	public ArrayList<Cluster> run(ArrayList<Datum> data){
-		dim = data.get(0).getData().size()-1;
+		dim = data.get(0).getData().size();
 		ArrayList<Cluster> clusters = initializeClusters(data);
 		System.out.println("dimensions of data set: " + dim);
 		for (int i = 0; i < gens; i++) {//number of iterations
