@@ -12,7 +12,7 @@ public class RunModels {
 
 	public static void main(String[] args) {
 
-		File file = new File("src/main/resources/abalone.csv");
+		File file = new File("src/main/resources/pima-indians-diabetes.data.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -82,17 +82,17 @@ public class RunModels {
 			//PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data);
 			//DBScanTuningExperiment dbste = new DBScanTuningExperiment(dataSize, data);
 			//kMeansTuningExperiment km = new kMeansTuningExperiment(dataSize, data);
-			String dataName = "abalone";
+			String dataName = "pima";
 //			DBScanExperiment dbse = new DBScanExperiment(dataSize, data, dataName);
 			int k;
-			k = 28; //abalone
+//			k = 28; //abalone
 //			k = 3; //haberman
 //			k = 7; //glass
 //			k = 2; //ionosphere
 //			k = 3; //iris
 //			k = 26; //letters
 //			k = 15; //libra
-//			k = 2;  //pima 
+			k = 2;  //pima 
 //			k = 8; //wine-red
 //			k = 7; //wine-white
 			
