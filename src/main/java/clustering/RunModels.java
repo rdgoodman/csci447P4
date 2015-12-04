@@ -13,8 +13,12 @@ public class RunModels {
 	public static void main(String[] args) {
 
 		Scanner input = new Scanner(System.in);
+<<<<<<< Updated upstream
 		System.out.println("Please enter P if you wish to run PSO, C if you wish to run Competitive Learning, A if you wish to run Ant-Based Clustering, ");
 		System.out.println("  K if you wish to run KMeans clustering, or D if you wish to run DBScan");
+=======
+		System.out.println("Please enter P if you wish to run PSO, C if you wish to run Competitive Learning, D if you wish to run DBSCAN");
+>>>>>>> Stashed changes
 		String algo = input.nextLine();
 
 		File file = new File("src/main/resources/iris.csv");
@@ -91,14 +95,24 @@ public class RunModels {
 				System.out.println();
 				compSoln.calcCohesion();
 				compSoln.calcSeparation();
+<<<<<<< Updated upstream
 			} else if(algo.equals("A")){
 				ACO aco = new ACO(5, 1000, 100, 600, 600, 80, 0.2, 0.4, 0.3, 2);
 				ClusterSet abcSoln = new ClusterSet(aco.run(data));
+=======
+			} else if (algo.equals("D")) {				
+				// DBSCAN
+				double epsilon = .28;
+				int minPts = 4;
+				DBScan dbs = new DBScan(epsilon, minPts, dataSize);
+				ClusterSet dbSoln = new ClusterSet(dbs.run(data));
+>>>>>>> Stashed changes
 				System.out.println();
 				System.out.println();
 				System.out.println("****************************");
 				System.out.println("*** Clustering Solution: ***");
 				System.out.println("****************************");
+<<<<<<< Updated upstream
 				abcSoln.print();
 				System.out.println();
 				abcSoln.calcCohesion();
@@ -116,9 +130,20 @@ public class RunModels {
 				kSoln.calcCohesion();
 				kSoln.calcSeparation();
 			}else if(algo.equals("D")){
-				
+				double epsilon = .28;
+				int minPts = 4;
+				DBScan dbs = new DBScan(epsilon, minPts, dataSize);
+				ClusterSet dbSoln = new ClusterSet(dbs.run(data));
+				System.out.println();
+				System.out.println();
+				System.out.println("****************************");
+				System.out.println("*** Clustering Solution: ***");
+				System.out.println("****************************");
+				dbSoln.print();
+				System.out.println();
+				dbSoln.calcCohesion();
+				dbSoln.calcSeparation();
 			}
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

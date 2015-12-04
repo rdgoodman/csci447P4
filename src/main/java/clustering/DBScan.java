@@ -49,6 +49,7 @@ public class DBScan {
 		ArrayList<Datum> visited = new ArrayList<Datum>();
 
 		System.out.println(">>>>>>>>>>>>DBSCAN");
+		System.out.println("Begin point classification");
 		// Build the set of all core points, then perform DB scan using the core
 		// set
 		// Select a data point at random to test as a core point
@@ -78,6 +79,7 @@ public class DBScan {
 
 			// if there are enough points in border set, add currPt to core set
 			if (border.size() >= minPoints) {
+				System.out.println("Added new core: " + currPt.getData());
 				core.add(currPt);
 			} // end if, we have added data point to core if appropriate
 
@@ -87,11 +89,14 @@ public class DBScan {
 			// clear the border set, because we are looking at a new core
 			border.clear();
 		} // end while, now all points are categorized
+		System.out.println("All points have been classified as core/border/noise");
+		System.out.println(core.size() + " points in the core set");
+		System.out.println();
 
-		
 		// **********************************************************
 		// Now begin the DB scan portion of the algorithm
-		
+
+		System.out.println("Begin construction of clusters");
 		// the label associated with the first cluster
 		int currClustLbl = 0;
 
@@ -105,41 +110,44 @@ public class DBScan {
 				clusters.add(new Cluster(core.get(p).getData(), currClustLbl));
 				// add the point p to this cluster
 				clusters.get(currClustLbl).addPoint(core.get(p));
+				System.out.println("Cluster " + currClustLbl + " added point " + core.get(p).getData());
 
 				// for each point in the training set
 				for (int q = 0; q < data.size() - 1; q++) {
-
 					// if this point is already in a cluster, do not add again
 					if (clusters.contains(data.get(q))) {
 						// do nothing, this is already assigned to a cluster
 					} else {
 						if (!core.isEmpty()) {
-								if (core.get(p).calcDist(data.get(q)) <= epsilon) {
-									// getting here means point is in the
-									// neighborhood of p
-									// so add it to the cluster
-									clusters.get(currClustLbl).addPoint(data.get(q));
-									// checks if this point is in the core set,
-									// if so, erases it so they do not
-									// get double counted
+							System.out.println("Distance from p to q is " + core.get(p).calcDist(data.get(q)));
+							if (core.get(p).calcDist(data.get(q)) <= epsilon) {
+								// getting here means point is in the
+								// neighborhood of p
+								// so add it to the cluster
+								clusters.get(currClustLbl).addPoint(data.get(q));
+								System.out.println("Cluster " + currClustLbl + " added point " + data.get(q).getData());
+								// checks if this point is in the core set,
+								// if so, erases it so they do not
+								// get double counted
 
-									if (core.contains(data.get(q))) {
-										if (core.size() >= 1) {
-											if (!core.get(p).equals(data.get(q))){
-												core.remove(data.get(q));												
-											} 
-										} //check that we can remove from the core set
-									}  // end if for checking if q is in core
-								} //end if for calculating data
-							} // end else if for neighborhood checking
-						} // end else for cluster checking data
-					} // end for - data set checking
-				} //end outer else for cluster checking core
+								if (core.contains(data.get(q))) {
+									if (core.size() > 0) {
+										if (!core.get(p).equals(data.get(q))) {
+											core.remove(data.get(q));
+										}
+									} // check that we can remove from the core
+								} // end if for checking if q is in core
+							} // end if for calculating data
+						} // end else if for neighborhood checking
+					} // end else for cluster checking data
+				} // end for - data set checking
+			} // end outer else for cluster checking core
 
-			// all valid points in the cluster for p, increment for 
+			// all valid points in the cluster for p, increment for
 			// cluster p +1
 			currClustLbl++;
 		} // end for core set checking
+
 		System.out.println("End DBScan");
 		return clusters;
 	}

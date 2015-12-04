@@ -4,9 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class kMeansTuningExperiment {
+public class KMeansTuningExperiment {
 
-	public kMeansTuningExperiment(int dataSize, ArrayList<Datum> data) {
+	public KMeansTuningExperiment(int dataSize, ArrayList<Datum> data) {
 
 		String filePathOut1 = "";
 
