@@ -1,3 +1,5 @@
+This is a Maven project.
+
 Procedure for getting Maven up and running (in Eclipse):
 	1) Pull from repository
 	2) Check for m2e plugin (Help -> Installation Details -> Plug-Ins, search "maven")
@@ -7,23 +9,65 @@ Procedure for getting Maven up and running (in Eclipse):
 	6) If no errors, then click RunModels -> Run As -> Java Application
 	7) All should be well!
 	
+	
+To do sample runs of an algorithm:
+	1) Run RunModels.java
+	2) Follow the prompts to select the algorithm you want
+	
+	* Note that, for the sake of readability, the sample runs are simplified problems
+	(e.g. PSO only runs for 100 iterations instead of 1000)
+	
+	
+Classes:
 
-Using the Cluster/Datum/ClusterSet objects:
-	1) Inputs need to be cast as Datums. A Datum first and foremost stores an input vector (minus the
-	class variable, since this is clustering) as an ArrayList of doubles. Later, the assignToCluster()
-	method can be used by a clustering algorithm to assign the Datum to a cluster. This is a bidirectional 
-	association, as the Cluster object also stores its list of associated Datums.
-	2) Each clustering algorithm should contain a run() method which takes in an ArrayList of Datums 
-	and outputs an ArrayList of Clusters. 
-	3) A Cluster object contains:
-		a) centroids: an ArrayList of doubles, primarily used for methods that focus on representing the
-		cluster as its centroid. This isn't applicable for all methods (e.g. competitive learning), so
-		in that case I just used the array of weights as the centroid, since it's not actually used
-		in cohesion/separation calculations anyway. 
-		b) pts: an ArrayList of all the Datums assigned to this cluster by whatever method generated it.
-		c) index: the index of this Cluster, i.e. its position in the ArrayList of Clusters returned
-		by whatever method generated it
-	4) Our equivalent of the RunModels class should feed the results of each algorithm's run() method 
-	into a separate ClusterSet, which represents a full clustering of the data. This is useful for
-	comparing the algorithms, since the ClusterSet object can calculate cohesion and separation for
-	the results.
+	ACO.java
+		An ant-based clustering (ABC) instance
+		
+	ACOAgent.java
+		Represents an ant in an ACO/ABC instance
+	
+	ANNTuningExperiment.java
+		Used to run the competitive learning experiments in the paper
+		
+	Cluster.java
+		Stores a single cluster object, i.e. a centroid (or equivalent) and a set of data points
+		
+	ClusterSet.java
+		Stores the full output of a clustering algorithm, i.e. a set of Clusters
+		
+	CompetitiveANN.java
+		A competitive learning neural network instance
+		
+	Datum.java
+		Stores a single data point to be clustered
+		
+	DBScan.java
+		A DBScan algorithm instance
+		
+	DBScanTuningExperiment.java
+		Used to run tuning experiments for DBScan
+		
+	Distance.java
+		Does the distance calculations for K Means
+		
+	KMeans.java
+		A k-means algorithm instance
+		
+	KMeansTuningExperiment.java
+		Used to run tuning experiments for K Means
+	
+	Neuron.java
+		A single unit in a competitive learning neural network
+		
+	Particle.java
+		A single particle in a PSO swarm
+		
+	PSO.java
+		An instance of a clustering particle swarm optimizer
+		
+	PSOExperiment.java
+		Used to run experiments for PSO
+	
+	RunModels.java
+		Main class
+	

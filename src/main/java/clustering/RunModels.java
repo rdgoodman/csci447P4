@@ -74,7 +74,7 @@ public class RunModels {
 				ArrayList<Datum> test = new ArrayList<Datum>();
 				for (Datum d : data) {
 					double p = Math.random();
-					if (p < .2) {
+					if (p < .3) {
 						test.add(d);
 					} else {
 						train.add(d);

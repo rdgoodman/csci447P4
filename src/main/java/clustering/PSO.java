@@ -124,6 +124,7 @@ public class PSO {
 			p.findBestCluster(z);
 		}
 		double fit = p.calcFitness(data, percent);
+		p.print();
 		System.out.println("Best fitness: " + fit);
 
 		return p;

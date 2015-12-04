@@ -5,9 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PSOTuningExperiment {
+public class PSOExperiment {
 
-	public PSOTuningExperiment(int dataSize, ArrayList<Datum> data, int numClusters, String datasetName) {
+	public PSOExperiment(int dataSize, ArrayList<Datum> data, int numClusters, String datasetName) {
 
 		String filePathOut1 = "src/main/resources/PSO" + datasetName + ".txt";
 		String filePathOut2 = "src/main/resources/PSO_cl_" + datasetName + ".txt";

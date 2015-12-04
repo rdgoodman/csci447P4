@@ -271,7 +271,7 @@ public class Particle {
 	 * Prints a representation of the particle, for testing purposes only
 	 */
 	public void print() {
-		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		DecimalFormat twoDForm = new DecimalFormat("#.####");
 		System.out.println("PARTICLE: " + fitness);
 		for (int i = 0; i < numClusters; i++) {
 			System.out.print("Cluster " + i + ": ");

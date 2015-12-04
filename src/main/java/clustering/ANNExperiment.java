@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ANNTuningExperiment {
+public class ANNExperiment {
 
-	public ANNTuningExperiment(int dataSize, ArrayList<Datum> data, int numClusters, String datasetName) {
+	public ANNExperiment(int dataSize, ArrayList<Datum> data, int numClusters, String datasetName) {
 
 		String filePathOut1 = "src/main/resources/ANN" + datasetName + ".txt";
 		String filePathOut2 = "src/main/resources/ANN_cl_" + datasetName + ".txt";
