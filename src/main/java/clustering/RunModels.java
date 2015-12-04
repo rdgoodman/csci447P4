@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class RunModels {
 
 	public static void main(String[] args) {
-		File file = new File("src/main/resources/bupa.data.csv");
+		File file = new File("src/main/resources/data_banknote_authentication.csv");
 		ArrayList<Datum> data = new ArrayList<Datum>();
 
 		try {
@@ -70,9 +70,8 @@ public class RunModels {
 			// soln.calcCohesion();
 			// soln.calcSeparation();
 
-			// PSOTuningExperiment multiplierExperiment = new
-			// PSOTuningExperiment(dataSize, data);
-			ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data, 5, "bupa");
+			PSOTuningExperiment multiplierExperiment = new PSOTuningExperiment(dataSize, data, 2, "hab");
+			ANNTuningExperiment exp = new ANNTuningExperiment(dataSize, data, 2, "hab");
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

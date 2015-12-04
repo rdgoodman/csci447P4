@@ -130,6 +130,7 @@ public class Particle {
 		for (int i = 0; i < numDimensions; i++) {
 			sum += Math.pow(z.get(i) - centroids.get(index).getCentroid().get(i), 2);
 		}
+		
 		sum = Math.sqrt(sum);
 		return sum;
 	}

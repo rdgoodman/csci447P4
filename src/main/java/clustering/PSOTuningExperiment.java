@@ -36,7 +36,7 @@ public class PSOTuningExperiment {
 
 		for (int i = 0; i < 10; i++) {
 
-			PSO pso = new PSO(0.5, 0.3, 0.7, 15, numClusters, dataSize, .5, .1);
+			PSO pso = new PSO(0.5, 0.3, 0.7, 15, numClusters, dataSize, .5, .05);
 			ClusterSet soln = new ClusterSet(pso.run(data));
 			double ratio = soln.calcSeparation() / soln.calcCohesion();
 			int c = soln.getNumClusters();
